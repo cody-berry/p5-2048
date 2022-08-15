@@ -1,6 +1,15 @@
 /**
- *  @author 
- *  @date 2022.
+ *  @author Cody
+ *  @date 2022.08.15
+ *
+ *  test cases for right for just a single row:
+ *       [0, 0, 0, 2] → [0, 0, 0, 2] due to nothing being able to be shifted
+ *       [2, 0, 0, 0] → [0, 0, 0, 2] due to the 2 being shifted all the way
+ *       [0, 0, 2, 2] → [0, 0, 0, 4] due to the left 2 being combined with the right one
+ *       [0, 2, 2, 2] → [0, 0, 2, 4] due to the 2s being combined and the other 2 moving to the right-most square after
+ *       [2, 2, 4, 4] → [0, 0, 4, 8] due to the 4s being combined and the 2s combine moving to the right side
+ *       [2, 2, 2, 2] → [0, 0, 4, 4] due to the 4s not being able to be combined another time
+ *       [2, 2, 4, 8] → [0, 4, 4, 8] as opposed to [0, 0, 0, 16] due to the 2s combining but not being able to combine again with the 4
  *
  */
 
