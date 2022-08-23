@@ -21,6 +21,7 @@
 let font
 let instructions
 let debugCorner /* output debug text in the bottom left corner of the canvas */
+let twentyFortyEightBoard
 
 
 function preload() {
@@ -40,6 +41,8 @@ function setup() {
         numpad 1 → freeze sketch</pre>`)
 
     debugCorner = new CanvasDebugCorner(5)
+
+    twentyFortyEightBoard = new GameBoard()
 }
 
 
