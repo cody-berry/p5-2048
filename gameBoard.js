@@ -4,8 +4,8 @@ class GameBoard {
     constructor() {
         this.rows = [
             [0, 0, 0, 0],  // this is the 1st row
-            [0, 0, 0, 0],  // this is the 2nd row
-            [0, 0, 0, 0],  // this is the 3rd row
+            [0, 0, 2, 0],  // this is the 2nd row
+            [0, 2, 0, 0],  // this is the 3rd row
             [0, 0, 0, 0]   // this is the 4th row
         ]
         this.focusedRow = [
@@ -15,8 +15,8 @@ class GameBoard {
 
         this.cols = [
             [0, 0, 0, 0],  // this is the 1st column
-            [0, 0, 0, 0],  // this is the 2nd column
-            [0, 0, 0, 0],  // this is the 3rd column
+            [0, 0, 2, 0],  // this is the 2nd column
+            [0, 2, 0, 0],  // this is the 3rd column
             [0, 0, 0, 0]   // this is the 4th column
         ]
         this.focusedCol = [
@@ -235,6 +235,14 @@ class GameBoard {
             const slideResult = this.moveLeft(testCase)
 
             console.log(`${i.padStart(2, '0')}.left→[${testCase}]→[${slideResult}] ?= [${expectedResult}]`)
+        }
+    }
+
+    // clears console, prints out current row contents
+    show() {
+        console.clear()
+        for (let row of this.rows) {
+            console.log(row)
         }
     }
 }
