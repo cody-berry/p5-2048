@@ -31,14 +31,6 @@ class GameBoard {
 
     // }
 
-    combineRight() {
-
-    }
-
-    moveRight() {
-
-    }
-
     spawnRandomTwo() {
 
     }
@@ -50,7 +42,6 @@ class GameBoard {
     // preforms the right move command on a single row, except without the combine part
     slideRight(row){
         let rowCopy = [...row]
-        console.log(rowCopy)
         let result = [0, 0, 0, 0]
 
         for (let cellIndex = 3; cellIndex >= 0; cellIndex--) {
@@ -91,8 +82,6 @@ class GameBoard {
             {'arr': [2, 2, 2, 2], 'ans': [2, 2, 2, 2]}
         ]
 
-        console.log(testTuples[1])
-
         for (const i in testTuples) {
             const test = testTuples[i]
 
@@ -106,13 +95,14 @@ class GameBoard {
 
     combineRight(row) {
         let rowCopy = [...row]
-        console.log(rowCopy)
         let result = [0, 0, 0, 0]
 
         for (let cellIndex = 3; cellIndex > 0; cellIndex--) {
             if (rowCopy[cellIndex] === rowCopy[cellIndex-1]) {
                 result[cellIndex] = rowCopy[cellIndex] * 2
-                rowCopy[cellIndex-1] = 0
+                rowCopy[cellIndex - 1] = 0
+            } else {
+                result[cellIndex] = rowCopy[cellIndex]
             }
         }
 
@@ -142,6 +132,48 @@ class GameBoard {
             const slideResult = this.combineRight(testCase)
 
             console.log(`${i.padStart(2, '0')}.combine→[${testCase}]→[${slideResult}] ?= [${expectedResult}]`)
+        }
+    }
+
+    moveRight(row) {
+        let slidedRow = this.slideRight(row)
+
+        let combinedRow = this.combineRight(slidedRow)
+
+        let result = this.slideRight(combinedRow)
+        return result
+    }
+
+    // runs tests for the function moveRight()
+    runMoveRightTests() {
+        const testTuples = [
+            // basic single-cell slides
+            {'arr': [0, 0, 0, 0], 'ans': [0, 0, 0, 0]},
+            {'arr': [0, 0, 0, 2], 'ans': [0, 0, 0, 2]},
+            {'arr': [0, 0, 2, 0], 'ans': [0, 0, 0, 2]},
+            {'arr': [0, 2, 0, 0], 'ans': [0, 0, 0, 2]},
+            {'arr': [2, 0, 0, 0], 'ans': [0, 0, 0, 2]},
+            // test basic combines
+            {'arr': [0, 0, 2, 2], 'ans': [0, 0, 0, 4]},
+            {'arr': [0, 2, 0, 2], 'ans': [0, 0, 0, 4]},
+            {'arr': [2, 0, 0, 2], 'ans': [0, 0, 0, 4]},
+            // test complex middle-array combines
+            {'arr': [2, 0, 2, 0], 'ans': [0, 0, 0, 4]},
+            {'arr': [2, 2, 0, 0], 'ans': [0, 0, 0, 4]},
+            {'arr': [0, 2, 2, 0], 'ans': [0, 0, 0, 4]},
+            // test combine order
+            {'arr': [0, 2, 2, 2], 'ans': [0, 0, 2, 4]},
+            {'arr': [2, 2, 2, 2], 'ans': [0, 0, 4, 4]}
+        ]
+
+        for (const i in testTuples) {
+            const test = testTuples[i]
+
+            const testCase = test['arr']
+            const expectedResult = test['ans']
+            const slideResult = this.moveRight(testCase)
+
+            console.log(`${i.padStart(2, '0')}.right→[${testCase}]→[${slideResult}] ?= [${expectedResult}]`)
         }
     }
 }
