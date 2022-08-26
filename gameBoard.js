@@ -163,6 +163,7 @@ class GameBoard {
             {'arr': [0, 2, 2, 0], 'ans': [0, 0, 0, 4]},
             // test combine order
             {'arr': [0, 2, 2, 2], 'ans': [0, 0, 2, 4]},
+            {'arr': [2, 2, 2, 0], 'ans': [0, 0, 2, 4]},
             {'arr': [2, 2, 2, 2], 'ans': [0, 0, 4, 4]}
         ]
 
@@ -174,6 +175,66 @@ class GameBoard {
             const slideResult = this.moveRight(testCase)
 
             console.log(`${i.padStart(2, '0')}.right→[${testCase}]→[${slideResult}] ?= [${expectedResult}]`)
+        }
+    }
+
+    moveLeft(row) {
+        let rowCopy = [...row]
+
+        // swap numbers so that it mimics moving right
+        let temp = rowCopy[3]
+        rowCopy[3] = rowCopy[0]
+        rowCopy[0] = temp
+
+        let tempTwo = rowCopy[2]
+        rowCopy[2] = rowCopy[1]
+        rowCopy[1] = tempTwo
+
+        let result = this.moveRight(rowCopy)
+
+        // swap numbers so that it is actually moving left
+        let tempThree = result[3]
+        result[3] = result[0]
+        result[0] = tempThree
+
+        let tempFour = result[2]
+        result[2] = result[1]
+        result[1] = tempFour
+
+        return result
+    }
+
+    // runs tests for the function moveLeft()
+    runMoveLeftTests() {
+        const testTuples = [
+            // basic single-cell slides
+            {'arr': [0, 0, 0, 0], 'ans': [0, 0, 0, 0]},
+            {'arr': [0, 0, 0, 2], 'ans': [2, 0, 0, 0]},
+            {'arr': [0, 0, 2, 0], 'ans': [2, 0, 0, 0]},
+            {'arr': [0, 2, 0, 0], 'ans': [2, 0, 0, 0]},
+            {'arr': [2, 0, 0, 0], 'ans': [2, 0, 0, 0]},
+            // test basic combines
+            {'arr': [2, 2, 0, 0], 'ans': [4, 0, 0, 0]},
+            {'arr': [2, 0, 2, 0], 'ans': [4, 0, 0, 0]},
+            {'arr': [2, 0, 0, 2], 'ans': [4, 0, 0, 0]},
+            // test complex middle-array combines
+            {'arr': [0, 0, 2, 2], 'ans': [4, 0, 0, 0]},
+            {'arr': [0, 2, 0, 2], 'ans': [4, 0, 0, 0]},
+            {'arr': [0, 2, 2, 0], 'ans': [4, 0, 0, 0]},
+            // test combine order
+            {'arr': [0, 2, 2, 2], 'ans': [4, 2, 0, 0]},
+            {'arr': [2, 2, 2, 0], 'ans': [4, 2, 0, 0]},
+            {'arr': [2, 2, 2, 2], 'ans': [4, 4, 0, 0]}
+        ]
+
+        for (const i in testTuples) {
+            const test = testTuples[i]
+
+            const testCase = test['arr']
+            const expectedResult = test['ans']
+            const slideResult = this.moveLeft(testCase)
+
+            console.log(`${i.padStart(2, '0')}.left→[${testCase}]→[${slideResult}] ?= [${expectedResult}]`)
         }
     }
 }
