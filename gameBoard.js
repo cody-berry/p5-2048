@@ -49,16 +49,22 @@ class GameBoard {
 
     // preforms the right move command on a single row, except without the combine part
     slideRight(row){
-        let result = [...row]
+        let rowCopy = [...row]
+        console.log(rowCopy)
+        let result = [0, 0, 0, 0]
 
         for (let cellIndex = 3; cellIndex >= 0; cellIndex--) {
-            let cell = result[cellIndex]
+            let cell = rowCopy[cellIndex]
 
+            let slideIndex = 0
             for (let possibleSlideIndex = cellIndex; possibleSlideIndex < 4; possibleSlideIndex++) {
-                result[cellIndex] = 0
-
-                result[possibleSlideIndex] = cell
+                if (result[possibleSlideIndex] !== 0) {
+                    break
+                }
+                slideIndex = possibleSlideIndex
             }
+
+            result[slideIndex] = cell
         }
 
         return result
@@ -95,6 +101,47 @@ class GameBoard {
             const slideResult = this.slideRight(testCase)
 
             console.log(`${i.padStart(2, '0')}.slide→[${testCase}]→[${slideResult}] ?= [${expectedResult}]`)
+        }
+    }
+
+    combineRight(row) {
+        let rowCopy = [...row]
+        console.log(rowCopy)
+        let result = [0, 0, 0, 0]
+
+        for (let cellIndex = 3; cellIndex > 0; cellIndex--) {
+            if (rowCopy[cellIndex] === rowCopy[cellIndex-1]) {
+                result[cellIndex] = rowCopy[cellIndex] * 2
+                rowCopy[cellIndex-1] = 0
+            }
+        }
+
+        return result
+    }
+
+    // runs tests for the function combineRight()
+    runCombineRightTests() {
+        const testTuples = [
+            // basic combines only on 2 squares
+            {'arr': [2, 2, 0, 0], 'ans': [0, 4, 0, 0]},
+            {'arr': [0, 0, 2, 2], 'ans': [0, 0, 0, 4]},
+            {'arr': [0, 2, 2, 0], 'ans': [0, 0, 4, 0]},
+            // test combine on 0s
+            {'arr': [0, 0, 0, 0], 'ans': [0, 0, 0, 0]},
+            // test multiple combines
+            {'arr': [2, 2, 2, 2], 'ans': [0, 4, 0, 4]},
+            // test combine order
+            {'arr': [0, 2, 2, 4], 'ans': [0, 0, 4, 4]}
+        ]
+
+        for (const i in testTuples) {
+            const test = testTuples[i]
+
+            const testCase = test['arr']
+            const expectedResult = test['ans']
+            const slideResult = this.combineRight(testCase)
+
+            console.log(`${i.padStart(2, '0')}.combine→[${testCase}]→[${slideResult}] ?= [${expectedResult}]`)
         }
     }
 }

@@ -44,7 +44,8 @@ function setup() {
 
     twentyFortyEightBoard = new GameBoard()
 
-    twentyFortyEightBoard.runSlideRightTests()
+    // twentyFortyEightBoard.runSlideRightTests()
+    twentyFortyEightBoard.runCombineRightTests()
 }
 
 
