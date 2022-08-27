@@ -55,6 +55,10 @@ function setup() {
 function draw() {
     background(234, 34, 24)
 
+    if (frameCount % 12 === 0) {
+        twentyFortyEightBoard.show()
+    }
+
     /* debugCorner needs to be last so its z-index is highest */
     debugCorner.setText(`frameCount: ${frameCount}`, 2)
     debugCorner.setText(`fps: ${frameRate().toFixed(0)}`, 1)
@@ -74,11 +78,17 @@ function keyPressed() {
         instructions.html(`<pre>
             sketch stopped</pre>`)
     }
-    if (key === 's') { /* shows board */
-        twentyFortyEightBoard.show()
+    if (key === 'ArrowRight') {
+        console.log('RIGHT')
+        for (let rowNum in twentyFortyEightBoard.rows) {
+            twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveRight(twentyFortyEightBoard.rows[rowNum])
+        }
     }
-    if (key === RIGHT) {
-
+    if (key === 'ArrowLeft') {
+        console.log('LEFT')
+        for (let rowNum in twentyFortyEightBoard.rows) {
+            twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveLeft(twentyFortyEightBoard.rows[rowNum])
+        }
     }
 }
 
