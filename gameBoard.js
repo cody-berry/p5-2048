@@ -4,7 +4,7 @@ class GameBoard {
     constructor() {
         this.rows = [
             [0, 0, 0, 0],  // this is the 1st row
-            [0, 2, 2, 0],  // this is the 2nd row
+            [0, 0, 0, 0],  // this is the 2nd row
             [0, 0, 0, 0],  // this is the 3rd row
             [0, 0, 0, 0]   // this is the 4th row
         ]
@@ -13,7 +13,17 @@ class GameBoard {
     }
 
     spawnRandomTwo() {
-
+        while (true) {
+            let randomRow = random([0, 1, 2, 3])
+            let randomCol = random([0, 1, 2, 3])
+            if (this.rows[randomRow][randomCol] === 0) {
+                console.log(randomRow, randomCol)
+                this.rows[randomRow][randomCol] = 2
+                break
+            } else {
+                print(this.rows[randomRow][randomCol])
+            }
+        }
     }
 
     spawnRandomFour() {

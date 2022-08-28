@@ -49,15 +49,17 @@ function setup() {
     // print(twentyFortyEightBoard.combineRight([0, 0, 0, 2]))
     // twentyFortyEightBoard.runMoveRightTests()
     // twentyFortyEightBoard.runMoveLeftTests()
+
+    // these are the initial twos
+    twentyFortyEightBoard.spawnRandomTwo()
+    twentyFortyEightBoard.spawnRandomTwo()
+
+    twentyFortyEightBoard.show()
 }
 
 
 function draw() {
     background(234, 34, 24)
-
-    if (frameCount % 12 === 0) {
-        twentyFortyEightBoard.show()
-    }
 
     /* debugCorner needs to be last so its z-index is highest */
     debugCorner.setText(`frameCount: ${frameCount}`, 2)
@@ -72,6 +74,9 @@ function draw() {
 
 
 function keyPressed() {
+
+    twentyFortyEightBoard.show()
+
     /* stop sketch */
     if (keyCode === 97) { /* numpad 1 */
         noLoop()
@@ -82,11 +87,15 @@ function keyPressed() {
         for (let rowNum in twentyFortyEightBoard.rows) {
             twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveRight(twentyFortyEightBoard.rows[rowNum])
         }
+
+        twentyFortyEightBoard.spawnRandomTwo()
     }
     if (key === 'ArrowLeft') {
         for (let rowNum in twentyFortyEightBoard.rows) {
             twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveLeft(twentyFortyEightBoard.rows[rowNum])
         }
+
+        twentyFortyEightBoard.spawnRandomTwo()
     }
     if (key === 'ArrowDown') {
         for (let colNum in twentyFortyEightBoard.rows) {
@@ -101,6 +110,8 @@ function keyPressed() {
                 twentyFortyEightBoard.rows[rowNum][colNum] = col[rowNum]
             }
         }
+
+        twentyFortyEightBoard.spawnRandomTwo()
     }
     if (key === 'ArrowUp') {
         for (let colNum in twentyFortyEightBoard.rows) {
@@ -115,6 +126,8 @@ function keyPressed() {
                 twentyFortyEightBoard.rows[rowNum][colNum] = col[rowNum]
             }
         }
+
+        twentyFortyEightBoard.spawnRandomTwo()
     }
 }
 
