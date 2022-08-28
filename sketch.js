@@ -50,6 +50,7 @@ function setup() {
     // twentyFortyEightBoard.runMoveRightTests()
     // twentyFortyEightBoard.runMoveLeftTests()
 
+
     // these are the initial twos
     twentyFortyEightBoard.spawnRandomNumber()
     twentyFortyEightBoard.spawnRandomNumber()

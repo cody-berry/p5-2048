@@ -19,8 +19,6 @@ class GameBoard {
             if (this.rows[randomRow][randomCol] === 0) {
                 this.rows[randomRow][randomCol] = 2
                 break
-            } else {
-                print(this.rows[randomRow][randomCol])
             }
         }
     }
@@ -32,8 +30,6 @@ class GameBoard {
             if (this.rows[randomRow][randomCol] === 0) {
                 this.rows[randomRow][randomCol] = 4
                 break
-            } else {
-                print(this.rows[randomRow][randomCol])
             }
         }
     }
@@ -256,17 +252,64 @@ class GameBoard {
         textSize(20)
         textAlign(CENTER, CENTER)
 
-        fill(70, 10, 100, 80)
-
         for (let rowNum in this.rows) {
             for (let cellNum in this.rows[rowNum]) {
+                switch (this.rows[cellNum][rowNum]) {
+                    case 2:
+                        fill(0, 0, 100, 80)
+                        break
+                    case 4:
+                        fill(0, 0, 80, 80)
+                        break
+                    case 8:
+                        fill(40, 100, 100)
+                        break
+                    case 16:
+                        fill(30, 100, 100)
+                        break
+                    case 32:
+                        fill(20, 100, 100)
+                        break
+                    case 64:
+                        fill(10, 100, 100)
+                        break
+                    case 128:
+                        fill(60, 100, 100)
+                        stroke(60, 100, 90, 50)
+                        strokeWeight(5)
+                        break
+                    case 256:
+                        fill(58, 100, 90)
+                        stroke(58, 100, 81, 30)
+                        strokeWeight(6)
+                        break
+                    case 512:
+                        fill(56, 100, 89)
+                        stroke(56, 100, 80, 30)
+                        strokeWeight(7)
+                        break
+                    case 1024:
+                        fill(54, 100, 88)
+                        stroke(54, 100, 79, 30)
+                        textSize(15)
+                        break
+                    case 2048:
+                        fill(60, 100, 100)
+                        break
+                    default:
+                        fill(0, 0, 25)
+                }
 
 
                 square(rowNum*60+2, cellNum*60+2, 56)
+
+                noStroke()
+                textSize(14)
             }
         }
 
-        fill(0, 0, 0, 80)
+        fill(0, 0, 50, 80)
+        noStroke()
 
         for (let rowNum in this.rows) {
             for (let cellNum in this.rows[rowNum]) {
@@ -282,6 +325,7 @@ class GameBoard {
             }
         }
 
+        // cleanup
         textAlign(LEFT)
     }
 }
