@@ -51,15 +51,15 @@ function setup() {
     // twentyFortyEightBoard.runMoveLeftTests()
 
     // these are the initial twos
-    twentyFortyEightBoard.spawnRandomTwo()
-    twentyFortyEightBoard.spawnRandomTwo()
-
-    twentyFortyEightBoard.show()
+    twentyFortyEightBoard.spawnRandomNumber()
+    twentyFortyEightBoard.spawnRandomNumber()
 }
 
 
 function draw() {
     background(234, 34, 24)
+
+    twentyFortyEightBoard.show()
 
     /* debugCorner needs to be last so its z-index is highest */
     debugCorner.setText(`frameCount: ${frameCount}`, 2)
@@ -74,9 +74,6 @@ function draw() {
 
 
 function keyPressed() {
-
-    twentyFortyEightBoard.show()
-
     /* stop sketch */
     if (keyCode === 97) { /* numpad 1 */
         noLoop()
@@ -84,18 +81,22 @@ function keyPressed() {
             sketch stopped</pre>`)
     }
     if (key === 'ArrowRight') {
+        let originalRows = [...twentyFortyEightBoard.rows]
+
         for (let rowNum in twentyFortyEightBoard.rows) {
             twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveRight(twentyFortyEightBoard.rows[rowNum])
         }
 
-        twentyFortyEightBoard.spawnRandomTwo()
+        if (twentyFortyEightBoard.rows !== originalRows) {
+            twentyFortyEightBoard.spawnRandomNumber()
+        }
     }
     if (key === 'ArrowLeft') {
         for (let rowNum in twentyFortyEightBoard.rows) {
             twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveLeft(twentyFortyEightBoard.rows[rowNum])
         }
 
-        twentyFortyEightBoard.spawnRandomTwo()
+        twentyFortyEightBoard.spawnRandomNumber()
     }
     if (key === 'ArrowDown') {
         for (let colNum in twentyFortyEightBoard.rows) {
@@ -111,7 +112,7 @@ function keyPressed() {
             }
         }
 
-        twentyFortyEightBoard.spawnRandomTwo()
+        twentyFortyEightBoard.spawnRandomNumber()
     }
     if (key === 'ArrowUp') {
         for (let colNum in twentyFortyEightBoard.rows) {
@@ -127,7 +128,7 @@ function keyPressed() {
             }
         }
 
-        twentyFortyEightBoard.spawnRandomTwo()
+        twentyFortyEightBoard.spawnRandomNumber()
     }
 }
 

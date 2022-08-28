@@ -17,7 +17,6 @@ class GameBoard {
             let randomRow = random([0, 1, 2, 3])
             let randomCol = random([0, 1, 2, 3])
             if (this.rows[randomRow][randomCol] === 0) {
-                console.log(randomRow, randomCol)
                 this.rows[randomRow][randomCol] = 2
                 break
             } else {
@@ -27,7 +26,24 @@ class GameBoard {
     }
 
     spawnRandomFour() {
+        while (true) {
+            let randomRow = random([0, 1, 2, 3])
+            let randomCol = random([0, 1, 2, 3])
+            if (this.rows[randomRow][randomCol] === 0) {
+                this.rows[randomRow][randomCol] = 4
+                break
+            } else {
+                print(this.rows[randomRow][randomCol])
+            }
+        }
+    }
 
+    spawnRandomNumber() {
+        if (random() > 8) {
+            this.spawnRandomFour()
+        } else {
+            this.spawnRandomTwo()
+        }
     }
 
     // preforms the right move command on a single row, except without the combine part
@@ -229,12 +245,44 @@ class GameBoard {
         }
     }
 
-    // clears console, prints out current row contents
+    // shows all the numbers on-screen
     show() {
-        console.clear()
-        for (let row of this.rows) {
-            console.log(row)
+
+        rectMode(CORNER)
+
+        fill(70, 5, 75)
+
+        square(0, 0, 240)
+        textSize(20)
+        textAlign(CENTER, CENTER)
+
+        fill(70, 10, 100, 80)
+
+        for (let rowNum in this.rows) {
+            for (let cellNum in this.rows[rowNum]) {
+
+
+                square(rowNum*60+2, cellNum*60+2, 56)
+            }
         }
+
+        fill(0, 0, 0, 80)
+
+        for (let rowNum in this.rows) {
+            for (let cellNum in this.rows[rowNum]) {
+                text(this.rows[rowNum][cellNum], cellNum*60+29, rowNum*60+29)
+
+                if (this.rows[cellNum][rowNum] === 0) {
+                    square(rowNum*60+2, cellNum*60+2, 56)
+                }
+
+                if (frameCount === 10) {
+                    print(cellNum*60+29, rowNum*60 + 29)
+                }
+            }
+        }
+
+        textAlign(LEFT)
     }
 }
 
