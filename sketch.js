@@ -48,7 +48,7 @@ function setup() {
     // twentyFortyEightBoard.runCombineRightTests()
     // print(twentyFortyEightBoard.combineRight([0, 0, 0, 2]))
     // twentyFortyEightBoard.runMoveRightTests()
-    twentyFortyEightBoard.runMoveLeftTests()
+    // twentyFortyEightBoard.runMoveLeftTests()
 }
 
 
@@ -79,15 +79,41 @@ function keyPressed() {
             sketch stopped</pre>`)
     }
     if (key === 'ArrowRight') {
-        console.log('RIGHT')
         for (let rowNum in twentyFortyEightBoard.rows) {
             twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveRight(twentyFortyEightBoard.rows[rowNum])
         }
     }
     if (key === 'ArrowLeft') {
-        console.log('LEFT')
         for (let rowNum in twentyFortyEightBoard.rows) {
             twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveLeft(twentyFortyEightBoard.rows[rowNum])
+        }
+    }
+    if (key === 'ArrowDown') {
+        for (let colNum in twentyFortyEightBoard.rows) {
+            let col = []
+            for (let row of twentyFortyEightBoard.rows) {
+                col.push(row[colNum])
+            }
+
+            col = twentyFortyEightBoard.moveRight(col)
+
+            for (let rowNum in twentyFortyEightBoard.rows) {
+                twentyFortyEightBoard.rows[rowNum][colNum] = col[rowNum]
+            }
+        }
+    }
+    if (key === 'ArrowUp') {
+        for (let colNum in twentyFortyEightBoard.rows) {
+            let col = []
+            for (let row of twentyFortyEightBoard.rows) {
+                col.push(row[colNum])
+            }
+
+            col = twentyFortyEightBoard.moveLeft(col)
+
+            for (let rowNum in twentyFortyEightBoard.rows) {
+                twentyFortyEightBoard.rows[rowNum][colNum] = col[rowNum]
+            }
         }
     }
 }
