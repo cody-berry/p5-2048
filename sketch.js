@@ -50,10 +50,11 @@ function setup() {
     // twentyFortyEightBoard.runMoveRightTests()
     // twentyFortyEightBoard.runMoveLeftTests()
 
-
     // these are the initial twos
     twentyFortyEightBoard.spawnRandomNumber()
     twentyFortyEightBoard.spawnRandomNumber()
+
+    print(twentyFortyEightBoard.combineRight([2, 4, 8, 2]))
 }
 
 
@@ -61,6 +62,8 @@ function draw() {
     background(234, 34, 24)
 
     twentyFortyEightBoard.show()
+
+    text(`score: ${twentyFortyEightBoard.score}`, width/2, height/2)
 
     /* debugCorner needs to be last so its z-index is highest */
     debugCorner.setText(`frameCount: ${frameCount}`, 2)

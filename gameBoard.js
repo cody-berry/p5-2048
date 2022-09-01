@@ -9,6 +9,8 @@ class GameBoard {
             [0, 0, 0, 0]   // this is the 4th row
         ]
 
+        this.gameLost = false
+
         this.score = 0     // the current score. increases on each combine
     }
 
@@ -35,7 +37,7 @@ class GameBoard {
     }
 
     spawnRandomNumber() {
-        if (random() > 8) {
+        if (random() > 0.8) {
             this.spawnRandomFour()
         } else {
             this.spawnRandomTwo()
@@ -103,11 +105,14 @@ class GameBoard {
         for (let cellIndex = 3; cellIndex > 0; cellIndex--) {
             if (rowCopy[cellIndex] === rowCopy[cellIndex-1]) {
                 result[cellIndex] = rowCopy[cellIndex] * 2
+                this.score += rowCopy[cellIndex] * 2
                 rowCopy[cellIndex - 1] = 0
             } else {
                 result[cellIndex] = rowCopy[cellIndex]
             }
         }
+
+        result[0] = rowCopy[0]
 
         return result
     }
@@ -295,16 +300,17 @@ class GameBoard {
                         break
                     case 2048:
                         fill(60, 100, 100)
+                        textSize(15)
                         break
                     default:
                         fill(0, 0, 25)
+                        textSize(10)
                 }
 
 
                 square(rowNum*60+2, cellNum*60+2, 56)
 
                 noStroke()
-                textSize(14)
             }
         }
 
