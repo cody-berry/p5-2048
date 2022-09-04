@@ -3,10 +3,58 @@
 class GameBoard {
     constructor() {
         this.rows = [
-            [0, 0, 0, 0],  // this is the 1st row
-            [0, 0, 0, 0],  // this is the 2nd row
-            [0, 0, 0, 0],  // this is the 3rd row
-            [0, 0, 0, 0]   // this is the 4th row
+            [new Number2048(
+                new p5.Vector(0, 0),
+                0, 0
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                0, 1
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                0, 2
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                0, 3
+            )],  // this is the 1st row
+            [new Number2048(
+                new p5.Vector(0, 0),
+                1, 0
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                1, 1
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                1, 2
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                1, 3
+            )],  // this is the 2nd row
+            [new Number2048(
+                new p5.Vector(0, 0),
+                2, 0
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                2, 1
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                2, 2
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                2, 3
+            )],  // this is the 3rd row
+            [new Number2048(
+                new p5.Vector(0, 0),
+                3, 0
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                3, 1
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                3, 2
+            ), new Number2048(
+                new p5.Vector(0, 0),
+                3, 3
+            )]   // this is the 4th row
         ]
 
         this.gameLost = false
@@ -18,8 +66,12 @@ class GameBoard {
         while (true) {
             let randomRow = random([0, 1, 2, 3])
             let randomCol = random([0, 1, 2, 3])
-            if (this.rows[randomRow][randomCol] === 0) {
-                this.rows[randomRow][randomCol] = 2
+            if (this.rows[randomRow][randomCol].num === 0) {
+                this.rows[randomRow][randomCol] = new Number2048(
+                    new p5.Vector(0, 0),
+                    randomRow, randomCol
+                )
+                this.rows[randomRow][randomCol].num = 2
                 break
             }
         }
@@ -29,38 +81,53 @@ class GameBoard {
         while (true) {
             let randomRow = random([0, 1, 2, 3])
             let randomCol = random([0, 1, 2, 3])
-            if (this.rows[randomRow][randomCol] === 0) {
-                this.rows[randomRow][randomCol] = 4
+            if (this.rows[randomRow][randomCol].num === 0) {
+                this.rows[randomRow][randomCol] = new Number2048(
+                    new p5.Vector(0, 0),
+                    randomRow, randomCol
+                )
+                this.rows[randomRow][randomCol].num = 4
                 break
             }
         }
     }
 
     spawnRandomNumber() {
-        if (random() > 0.8) {
-            this.spawnRandomFour()
-        } else {
-            this.spawnRandomTwo()
+        let squareUnfilled = false
+        for (let row of this.rows) {
+            for (let cell of row) {
+                if (cell.num === 0) {
+                    squareUnfilled = true
+                }
+            }
+        }
+
+        if (squareUnfilled) {
+            if (random() > 0.8) {
+                this.spawnRandomFour()
+            } else {
+                this.spawnRandomTwo()
+            }
         }
     }
 
-    // preforms the right move command on a single row, except without the combine part
+    // performs the right move command on a single row, except without the
+    // combine part
     slideRight(row){
-        let rowCopy = [...row]
-        let result = [0, 0, 0, 0]
+        let result = [...row]
 
         for (let cellIndex = 3; cellIndex >= 0; cellIndex--) {
-            let cell = rowCopy[cellIndex]
+            let cell = result[cellIndex]
 
             let slideIndex = 0
             for (let possibleSlideIndex = cellIndex; possibleSlideIndex < 4; possibleSlideIndex++) {
-                if (result[possibleSlideIndex] !== 0) {
+                if (result[possibleSlideIndex].num !== 0) {
                     break
                 }
                 slideIndex = possibleSlideIndex
             }
 
-            result[slideIndex] = cell
+            result[slideIndex].num = cell.num
         }
 
         return result
@@ -99,20 +166,18 @@ class GameBoard {
     }
 
     combineRight(row) {
-        let rowCopy = [...row]
-        let result = [0, 0, 0, 0]
+        let result = [...row]
 
         for (let cellIndex = 3; cellIndex > 0; cellIndex--) {
-            if (rowCopy[cellIndex] === rowCopy[cellIndex-1]) {
-                result[cellIndex] = rowCopy[cellIndex] * 2
-                this.score += rowCopy[cellIndex] * 2
-                rowCopy[cellIndex - 1] = 0
-            } else {
-                result[cellIndex] = rowCopy[cellIndex]
+            if (result[cellIndex] === result[cellIndex-1]) {
+                result[cellIndex].num = result[cellIndex].num * 2
+                result[cellIndex].size = 20
+
+                result[cellIndex-1].num = 0
+
+                this.score += result[cellIndex].num * 2
             }
         }
-
-        result[0] = rowCopy[0]
 
         return result
     }
@@ -138,8 +203,6 @@ class GameBoard {
             const testCase = test['arr']
             const expectedResult = test['ans']
             const slideResult = this.combineRight(testCase)
-
-            console.log(`${i.padStart(2, '0')}.combine→[${testCase}]→[${slideResult}] ?= [${expectedResult}]`)
         }
     }
 
@@ -252,87 +315,84 @@ class GameBoard {
         rectMode(CORNER)
 
         fill(70, 5, 75)
-
-        square(0, 0, 240)
-        textSize(20)
         textAlign(CENTER, CENTER)
 
-        for (let rowNum in this.rows) {
-            for (let cellNum in this.rows[rowNum]) {
-                switch (this.rows[cellNum][rowNum]) {
-                    case 2:
-                        fill(0, 0, 100, 80)
-                        break
-                    case 4:
-                        fill(0, 0, 80, 80)
-                        break
-                    case 8:
-                        fill(40, 100, 100)
-                        break
-                    case 16:
-                        fill(30, 100, 100)
-                        break
-                    case 32:
-                        fill(20, 100, 100)
-                        break
-                    case 64:
-                        fill(10, 100, 100)
-                        break
-                    case 128:
-                        fill(60, 100, 100)
-                        stroke(60, 100, 90, 50)
-                        strokeWeight(5)
-                        break
-                    case 256:
-                        fill(58, 100, 90)
-                        stroke(58, 100, 81, 30)
-                        strokeWeight(6)
-                        break
-                    case 512:
-                        fill(56, 100, 89)
-                        stroke(56, 100, 80, 30)
-                        strokeWeight(7)
-                        break
-                    case 1024:
-                        fill(54, 100, 88)
-                        stroke(54, 100, 79, 30)
-                        textSize(15)
-                        break
-                    case 2048:
-                        fill(60, 100, 100)
-                        textSize(15)
-                        break
-                    default:
-                        fill(0, 0, 25)
-                        textSize(10)
-                }
+        if (this.gameLost) {
 
-
-                square(rowNum*60+2, cellNum*60+2, 56)
-
-                noStroke()
-            }
         }
+        else {
+            square(0, 0, 240)
+            for (let rowNum in this.rows) {
+                for (let cellNum in this.rows[rowNum]) {
+                    textSize(20)
+                    switch (this.rows[cellNum][rowNum].num) {
+                        case 2:
+                            fill(0, 0, 100, 80)
+                            break
+                        case 4:
+                            fill(0, 0, 80, 80)
+                            break
+                        case 8:
+                            fill(40, 100, 100)
+                            break
+                        case 16:
+                            fill(30, 100, 100)
+                            break
+                        case 32:
+                            fill(20, 100, 100)
+                            break
+                        case 64:
+                            fill(10, 100, 100)
+                            break
+                        case 128:
+                            fill(60, 100, 100)
+                            break
+                        case 256:
+                            fill(58, 100, 90)
+                            break
+                        case 512:
+                            fill(56, 100, 89)
+                            break
+                        case 1024:
+                            fill(54, 100, 88)
+                            textSize(15)
+                            break
+                        case 2048:
+                            fill(60, 100, 100)
+                            textSize(15)
+                            break
+                        default:
+                            fill(0, 0, 25)
+                            textSize(10)
+                    }
 
-        fill(0, 0, 50, 80)
-        noStroke()
+                    print(this.rows[rowNum][cellNum])
+                    this.rows[rowNum][cellNum].show()
 
-        for (let rowNum in this.rows) {
-            for (let cellNum in this.rows[rowNum]) {
-                text(this.rows[rowNum][cellNum], cellNum*60+29, rowNum*60+29)
-
-                if (this.rows[cellNum][rowNum] === 0) {
-                    square(rowNum*60+2, cellNum*60+2, 56)
-                }
-
-                if (frameCount === 10) {
-                    print(cellNum*60+29, rowNum*60 + 29)
+                    noStroke()
                 }
             }
-        }
 
-        // cleanup
-        textAlign(LEFT)
+            fill(0, 0, 50, 80)
+            noStroke()
+
+            // for (let rowNum in this.rows) {
+            //     for (let cellNum in this.rows[rowNum]) {
+            //         text(this.rows[rowNum][cellNum], cellNum * 60 + 29, rowNum * 60 + 29)
+            //
+            //         if (this.rows[cellNum][rowNum] === 0) {
+            //             square(rowNum * 60 + 2, cellNum * 60 + 2, 56)
+            //         }
+            //
+            //         if (frameCount === 10) {
+            //             print(cellNum * 60 + 29, rowNum * 60 + 29)
+            //         }
+            //     }
+            // }
+
+            // cleanup
+            textAlign(LEFT)
+        }
     }
 }
 

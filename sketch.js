@@ -21,7 +21,7 @@
 let font
 let instructions
 let debugCorner /* output debug text in the bottom left corner of the canvas */
-let twentyFortyEightBoard
+let gridFor2048
 
 
 function preload() {
@@ -42,28 +42,26 @@ function setup() {
 
     debugCorner = new CanvasDebugCorner(5)
 
-    twentyFortyEightBoard = new GameBoard()
+    gridFor2048 = new GameBoard()
 
-    // twentyFortyEightBoard.runSlideRightTests()
-    // twentyFortyEightBoard.runCombineRightTests()
-    // print(twentyFortyEightBoard.combineRight([0, 0, 0, 2]))
-    // twentyFortyEightBoard.runMoveRightTests()
-    // twentyFortyEightBoard.runMoveLeftTests()
+    // gridFor2048.runSlideRightTests()
+    // gridFor2048.runCombineRightTests()
+    // print(gridFor2048.combineRight([0, 0, 0, 2]))
+    // gridFor2048.runMoveRightTests()
+    // gridFor2048.runMoveLeftTests()
 
     // these are the initial twos
-    twentyFortyEightBoard.spawnRandomNumber()
-    twentyFortyEightBoard.spawnRandomNumber()
-
-    print(twentyFortyEightBoard.combineRight([2, 4, 8, 2]))
+    gridFor2048.spawnRandomNumber()
+    gridFor2048.spawnRandomNumber()
 }
 
 
 function draw() {
     background(234, 34, 24)
 
-    twentyFortyEightBoard.show()
+    gridFor2048.show()
 
-    text(`score: ${twentyFortyEightBoard.score}`, width/2, height/2)
+    text(`score: ${gridFor2048.score}`, width/2, height/2)
 
     /* debugCorner needs to be last so its z-index is highest */
     debugCorner.setText(`frameCount: ${frameCount}`, 2)
@@ -85,54 +83,54 @@ function keyPressed() {
             sketch stopped</pre>`)
     }
     if (key === 'ArrowRight') {
-        let originalRows = [...twentyFortyEightBoard.rows]
+        let originalRows = [...gridFor2048.rows]
 
-        for (let rowNum in twentyFortyEightBoard.rows) {
-            twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveRight(twentyFortyEightBoard.rows[rowNum])
+        for (let rowNum in gridFor2048.rows) {
+            gridFor2048.rows[rowNum] = gridFor2048.moveRight(gridFor2048.rows[rowNum])
         }
 
-        if (twentyFortyEightBoard.rows !== originalRows) {
-            twentyFortyEightBoard.spawnRandomNumber()
+        if (gridFor2048.rows !== originalRows) {
+            gridFor2048.spawnRandomNumber()
         }
     }
     if (key === 'ArrowLeft') {
-        for (let rowNum in twentyFortyEightBoard.rows) {
-            twentyFortyEightBoard.rows[rowNum] = twentyFortyEightBoard.moveLeft(twentyFortyEightBoard.rows[rowNum])
+        for (let rowNum in gridFor2048.rows) {
+            gridFor2048.rows[rowNum] = gridFor2048.moveLeft(gridFor2048.rows[rowNum])
         }
 
-        twentyFortyEightBoard.spawnRandomNumber()
+        gridFor2048.spawnRandomNumber()
     }
     if (key === 'ArrowDown') {
-        for (let colNum in twentyFortyEightBoard.rows) {
+        for (let colNum in gridFor2048.rows) {
             let col = []
-            for (let row of twentyFortyEightBoard.rows) {
+            for (let row of gridFor2048.rows) {
                 col.push(row[colNum])
             }
 
-            col = twentyFortyEightBoard.moveRight(col)
+            col = gridFor2048.moveRight(col)
 
-            for (let rowNum in twentyFortyEightBoard.rows) {
-                twentyFortyEightBoard.rows[rowNum][colNum] = col[rowNum]
+            for (let rowNum in gridFor2048.rows) {
+                gridFor2048.rows[rowNum][colNum] = col[rowNum]
             }
         }
 
-        twentyFortyEightBoard.spawnRandomNumber()
+        gridFor2048.spawnRandomNumber()
     }
     if (key === 'ArrowUp') {
-        for (let colNum in twentyFortyEightBoard.rows) {
+        for (let colNum in gridFor2048.rows) {
             let col = []
-            for (let row of twentyFortyEightBoard.rows) {
+            for (let row of gridFor2048.rows) {
                 col.push(row[colNum])
             }
 
-            col = twentyFortyEightBoard.moveLeft(col)
+            col = gridFor2048.moveLeft(col)
 
-            for (let rowNum in twentyFortyEightBoard.rows) {
-                twentyFortyEightBoard.rows[rowNum][colNum] = col[rowNum]
+            for (let rowNum in gridFor2048.rows) {
+                gridFor2048.rows[rowNum][colNum] = col[rowNum]
             }
         }
 
-        twentyFortyEightBoard.spawnRandomNumber()
+        gridFor2048.spawnRandomNumber()
     }
 }
 
