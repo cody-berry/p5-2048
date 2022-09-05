@@ -215,6 +215,18 @@ class GameBoard {
         return result
     }
 
+    commandRight() {
+        let originalRows = [...this.rows]
+
+        for (let rowNum in gridFor2048.rows) {
+            this.rows[rowNum] = this.moveRight(this.rows[rowNum])
+        }
+
+        if (this.rows !== originalRows) {
+            this.spawnRandomNumber()
+        }
+    }
+
     // runs tests for the function moveRight()
     runMoveRightTests() {
         const testTuples = [
@@ -366,12 +378,13 @@ class GameBoard {
                             textSize(10)
                     }
 
-                    print(this.rows[rowNum][cellNum])
                     this.rows[rowNum][cellNum].show()
 
                     noStroke()
                 }
             }
+
+            console.clear()
 
             fill(0, 0, 50, 80)
             noStroke()
