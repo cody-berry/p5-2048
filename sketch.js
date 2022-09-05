@@ -64,6 +64,11 @@ function draw() {
     background(234, 34, 24)
 
     gridFor2048.show()
+    for (let row of gridFor2048.rows) {
+        for (let cell of row) {
+            cell.update()
+        }
+    }
 
     text(`score: ${gridFor2048.score}`, width/2, height/2)
 
@@ -80,6 +85,8 @@ function draw() {
 
 
 function keyPressed() {
+    let originalGrid = gridFor2048
+    print(originalGrid)
     /* stop sketch */
     if (keyCode === 97) { /* numpad 1 */
         noLoop()
@@ -91,14 +98,14 @@ function keyPressed() {
         console.log(`debugCorner visibility set to ${debugCorner.visible}`)
     }
     if (key === 'ArrowRight') {
-        gridFor2048.commandRight()
+        for (let rowNum in gridFor2048.rows) {
+            this.rows[rowNum] = this.moveRight(this.rows[rowNum])
+        }
     }
     if (key === 'ArrowLeft') {
         for (let rowNum in gridFor2048.rows) {
             gridFor2048.rows[rowNum] = gridFor2048.moveLeft(gridFor2048.rows[rowNum])
         }
-
-        gridFor2048.spawnRandomNumber()
     }
     if (key === 'ArrowDown') {
         for (let colNum in gridFor2048.rows) {
@@ -113,8 +120,6 @@ function keyPressed() {
                 gridFor2048.rows[rowNum][colNum] = col[rowNum]
             }
         }
-
-        gridFor2048.spawnRandomNumber()
     }
     if (key === 'ArrowUp') {
         for (let colNum in gridFor2048.rows) {
@@ -129,8 +134,17 @@ function keyPressed() {
                 gridFor2048.rows[rowNum][colNum] = col[rowNum]
             }
         }
+    }
 
+    if (originalGrid.equals(gridFor2048)) {
         gridFor2048.spawnRandomNumber()
+    }
+
+    for (let rowNum in gridFor2048.rows) {
+        for (let cellNum in gridFor2048.rows[rowNum]) {
+            gridFor2048.rows[cellNum][rowNum].targetX = rowNum*60 + 30
+            gridFor2048.rows[cellNum][rowNum].targetY = cellNum*60 + 30
+        }
     }
 }
 

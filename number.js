@@ -16,37 +16,40 @@ class Number2048 {
 
     // shows the current number
     show() {
-        rectMode(CENTER)
-        square(this.xPos, this.yPos, this.size)
-        textAlign(CENTER, CENTER)
-        fill(0, 0, 100)
-        text(this.num, this.xPos, this.yPos)
+        if (this.num > 0) {
+            rectMode(CENTER)
+            square(this.xPos, this.yPos, this.size)
+
+            textAlign(CENTER, CENTER)
+            fill(0, 0, 100)
+            text(this.num, this.xPos, this.yPos)
+        }
     }
 
     // arrive to a target location
     arriveLocation() {
         if (abs(this.targetX - this.xPos) === this.targetX - this.xPos) {
             if (abs(this.targetX - this.xPos) < 15) {
-                this.xPos += map(abs(this.targetX - this.xPos), 0, 15, 5, 0)
+                this.xPos += map(abs(this.targetX - this.xPos), 0, 15, 0, 5)
             } else {
                 this.xPos += 5
             }
         } else {
             if (abs(this.targetX - this.xPos) < 15) {
-                this.xPos -= map(abs(this.targetX - this.xPos), 0, 15, 5, 0)
+                this.xPos -= map(abs(this.targetX - this.xPos), 0, 15, 0, 5)
             } else {
                 this.xPos -= 5
             }
         }
         if (abs(this.targetY - this.yPos) === this.targetY - this.yPos) {
             if (abs(this.targetY - this.yPos) < 15) {
-                this.yPos += map(abs(this.targetY - this.xPos), 0, 15, 5, 0)
+                this.yPos += map(abs(this.targetY - this.yPos), 0, 15, 0, 5)
             } else {
                 this.yPos += 5
             }
         } else {
             if (abs(this.targetY - this.yPos) < 15) {
-                this.yPos -= map(abs(this.targetY - this.yPos), 0, 15, 5, 0)
+                this.yPos -= map(abs(this.targetY - this.yPos), 0, 15, 0, 5)
             } else {
                 this.yPos -= 5
             }
@@ -55,7 +58,19 @@ class Number2048 {
 
     // arrive to a target size
     arriveSize() {
-
+        if (abs(this.targetSize - this.size) === this.targetSize - this.size) {
+            if (abs(this.targetSize - this.size) < 15) {
+                this.size += map(abs(this.targetSize - this.size), 0, 15, 0, 5)
+            } else {
+                this.size += 5
+            }
+        } else {
+            if (abs(this.targetSize - this.yPos) < 15) {
+                this.size -= map(abs(this.targetSize - this.size), 0, 15, 0, 5)
+            } else {
+                this.size -= 5
+            }
+        }
     }
 
     // arrives to target location and size

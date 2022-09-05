@@ -62,6 +62,27 @@ class GameBoard {
         this.score = 0     // the current score. increases on each combine
     }
 
+    // checks if this board is equal to another board
+    equals(other) {
+        return this.rows[0][0].num === other.rows[0][0].num &&
+            this.rows[0][1].num === other.rows[0][1].num &&
+            this.rows[0][2].num === other.rows[0][2].num &&
+            this.rows[0][3].num === other.rows[0][3].num &&
+            this.rows[1][0].num === other.rows[1][0].num &&
+            this.rows[1][1].num === other.rows[1][1].num &&
+            this.rows[1][2].num === other.rows[1][2].num &&
+            this.rows[1][3].num === other.rows[1][3].num &&
+            this.rows[2][0].num === other.rows[2][0].num &&
+            this.rows[2][1].num === other.rows[2][1].num &&
+            this.rows[2][2].num === other.rows[2][2].num &&
+            this.rows[2][3].num === other.rows[2][3].num &&
+            this.rows[3][0].num === other.rows[3][0].num &&
+            this.rows[3][1].num === other.rows[3][1].num &&
+            this.rows[3][2].num === other.rows[3][2].num &&
+            this.rows[3][3].num === other.rows[3][3].num
+
+    }
+
     spawnRandomTwo() {
         while (true) {
             let randomRow = random([0, 1, 2, 3])
@@ -215,18 +236,6 @@ class GameBoard {
         return result
     }
 
-    commandRight() {
-        let originalRows = [...this.rows]
-
-        for (let rowNum in gridFor2048.rows) {
-            this.rows[rowNum] = this.moveRight(this.rows[rowNum])
-        }
-
-        if (this.rows !== originalRows) {
-            this.spawnRandomNumber()
-        }
-    }
-
     // runs tests for the function moveRight()
     runMoveRightTests() {
         const testTuples = [
@@ -324,7 +333,7 @@ class GameBoard {
     // shows all the numbers on-screen
     show() {
 
-        rectMode(CORNER)
+        rectMode(CENTER)
 
         fill(70, 5, 75)
         textAlign(CENTER, CENTER)
@@ -336,7 +345,14 @@ class GameBoard {
             square(0, 0, 240)
             for (let rowNum in this.rows) {
                 for (let cellNum in this.rows[rowNum]) {
+                    square(rowNum*60 + 30, cellNum*60 + 30, 56)
+                }
+            }
+
+            for (let rowNum in this.rows) {
+                for (let cellNum in this.rows[rowNum]) {
                     textSize(20)
+                    fill(70, 5, 70)
                     switch (this.rows[cellNum][rowNum].num) {
                         case 2:
                             fill(0, 0, 100, 80)
@@ -378,13 +394,11 @@ class GameBoard {
                             textSize(10)
                     }
 
-                    this.rows[rowNum][cellNum].show()
+                    this.rows[cellNum][rowNum].show()
 
                     noStroke()
                 }
             }
-
-            console.clear()
 
             fill(0, 0, 50, 80)
             noStroke()
