@@ -54,9 +54,16 @@ function setup() {
     // gridFor2048.runMoveRightTests()
     // gridFor2048.runMoveLeftTests()
 
-    // these are the initial twos
+    gridFor2048.rows[0][0].num = 2
+
+    // these are the initial twos/fours
     gridFor2048.spawnRandomNumber()
     gridFor2048.spawnRandomNumber()
+
+
+
+    print(gridFor2048.rows[0])
+    print(gridFor2048.moveRight(gridFor2048.rows[0]))
 }
 
 
@@ -70,6 +77,7 @@ function draw() {
         }
     }
 
+    textSize(20)
     text(`score: ${gridFor2048.score}`, width/2, height/2)
 
     /* debugCorner needs to be last so its z-index is highest */
@@ -99,7 +107,7 @@ function keyPressed() {
     }
     if (key === 'ArrowRight') {
         for (let rowNum in gridFor2048.rows) {
-            this.rows[rowNum] = this.moveRight(this.rows[rowNum])
+            gridFor2048.rows[rowNum] = gridFor2048.moveRight(gridFor2048.rows[rowNum])
         }
     }
     if (key === 'ArrowLeft') {
@@ -136,14 +144,14 @@ function keyPressed() {
         }
     }
 
-    if (originalGrid.equals(gridFor2048)) {
+    if (!originalGrid.equals(gridFor2048)) {
         gridFor2048.spawnRandomNumber()
     }
 
     for (let rowNum in gridFor2048.rows) {
         for (let cellNum in gridFor2048.rows[rowNum]) {
-            gridFor2048.rows[cellNum][rowNum].targetX = rowNum*60 + 30
-            gridFor2048.rows[cellNum][rowNum].targetY = cellNum*60 + 30
+            gridFor2048.rows[rowNum][cellNum].targetX = rowNum*60 + 30
+            gridFor2048.rows[rowNum][cellNum].targetY = cellNum*60 + 30
         }
     }
 }

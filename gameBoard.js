@@ -88,10 +88,6 @@ class GameBoard {
             let randomRow = random([0, 1, 2, 3])
             let randomCol = random([0, 1, 2, 3])
             if (this.rows[randomRow][randomCol].num === 0) {
-                this.rows[randomRow][randomCol] = new Number2048(
-                    new p5.Vector(0, 0),
-                    randomRow, randomCol
-                )
                 this.rows[randomRow][randomCol].num = 2
                 break
             }
@@ -103,10 +99,6 @@ class GameBoard {
             let randomRow = random([0, 1, 2, 3])
             let randomCol = random([0, 1, 2, 3])
             if (this.rows[randomRow][randomCol].num === 0) {
-                this.rows[randomRow][randomCol] = new Number2048(
-                    new p5.Vector(0, 0),
-                    randomRow, randomCol
-                )
                 this.rows[randomRow][randomCol].num = 4
                 break
             }
@@ -140,15 +132,20 @@ class GameBoard {
         for (let cellIndex = 3; cellIndex >= 0; cellIndex--) {
             let cell = result[cellIndex]
 
-            let slideIndex = 0
-            for (let possibleSlideIndex = cellIndex; possibleSlideIndex < 4; possibleSlideIndex++) {
-                if (result[possibleSlideIndex].num !== 0) {
-                    break
+            if (cell.num !== 0) {
+                let slideIndex = cellIndex
+                for (let possibleSlideIndex = cellIndex+1; possibleSlideIndex < 4; possibleSlideIndex++) {
+                    if (result[possibleSlideIndex].num !== 0) {
+                        break
+                    }
+                    slideIndex = possibleSlideIndex
                 }
-                slideIndex = possibleSlideIndex
-            }
 
-            result[slideIndex].num = cell.num
+                result[slideIndex] = cell
+                // if (cellIndex !== slideIndex) {
+                //     result[cellIndex].num = 0
+                // }
+            }
         }
 
         return result
@@ -193,10 +190,9 @@ class GameBoard {
             if (result[cellIndex] === result[cellIndex-1]) {
                 result[cellIndex].num = result[cellIndex].num * 2
                 result[cellIndex].size = 20
-
                 result[cellIndex-1].num = 0
 
-                this.score += result[cellIndex].num * 2
+                this.score += result[cellIndex].num
             }
         }
 
@@ -351,50 +347,10 @@ class GameBoard {
 
             for (let rowNum in this.rows) {
                 for (let cellNum in this.rows[rowNum]) {
-                    textSize(20)
+                    textSize(25)
                     fill(70, 5, 70)
-                    switch (this.rows[cellNum][rowNum].num) {
-                        case 2:
-                            fill(0, 0, 100, 80)
-                            break
-                        case 4:
-                            fill(0, 0, 80, 80)
-                            break
-                        case 8:
-                            fill(40, 100, 100)
-                            break
-                        case 16:
-                            fill(30, 100, 100)
-                            break
-                        case 32:
-                            fill(20, 100, 100)
-                            break
-                        case 64:
-                            fill(10, 100, 100)
-                            break
-                        case 128:
-                            fill(60, 100, 100)
-                            break
-                        case 256:
-                            fill(58, 100, 90)
-                            break
-                        case 512:
-                            fill(56, 100, 89)
-                            break
-                        case 1024:
-                            fill(54, 100, 88)
-                            textSize(15)
-                            break
-                        case 2048:
-                            fill(60, 100, 100)
-                            textSize(15)
-                            break
-                        default:
-                            fill(0, 0, 25)
-                            textSize(10)
-                    }
 
-                    this.rows[cellNum][rowNum].show()
+                    this.rows[rowNum][cellNum].show()
 
                     noStroke()
                 }

@@ -16,12 +16,61 @@ class Number2048 {
 
     // shows the current number
     show() {
+        switch (this.num) {
+            case 2:
+                fill(0, 0, 100, 80)
+                break
+            case 4:
+                fill(0, 0, 80, 80)
+                break
+            case 8:
+                fill(40, 100, 100)
+                break
+            case 16:
+                fill(30, 100, 100)
+                break
+            case 32:
+                fill(20, 100, 100)
+                break
+            case 64:
+                fill(10, 100, 100)
+                break
+            case 128:
+                fill(60, 100, 100)
+                break
+            case 256:
+                fill(58, 100, 90)
+                break
+            case 512:
+                fill(56, 100, 89)
+                break
+            case 1024:
+                fill(54, 100, 88)
+                textSize(19)
+                break
+            case 2048:
+                fill(60, 100, 100)
+                textSize(19)
+                break
+            default:
+                fill(0, 0, 25)
+                textSize(12)
+        }
+
         if (this.num > 0) {
             rectMode(CENTER)
             square(this.xPos, this.yPos, this.size)
 
             textAlign(CENTER, CENTER)
             fill(0, 0, 100)
+            stroke(0, 0, 100)
+            strokeWeight(4/this.num)
+
+            if (this.num < 8) {
+                fill(0, 0, 0)
+                stroke(0, 0, 0)
+            }
+
             text(this.num, this.xPos, this.yPos)
         }
     }
