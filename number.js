@@ -93,29 +93,29 @@ class Number2048 {
     // arrive to a target location
     arriveLocation() {
         if (abs(this.targetX - this.xPos) === this.targetX - this.xPos) {
-            if (abs(this.targetX - this.xPos) < 15) {
+            if (abs(this.targetX - this.xPos) < 20) {
                 this.xPos += map(abs(this.targetX - this.xPos), 0, 15, 0, 5)
             } else {
-                this.xPos += 5
+                this.xPos += 10
             }
         } else {
-            if (abs(this.targetX - this.xPos) < 15) {
+            if (abs(this.targetX - this.xPos) < 20) {
                 this.xPos -= map(abs(this.targetX - this.xPos), 0, 15, 0, 5)
             } else {
-                this.xPos -= 5
+                this.xPos -= 10
             }
         }
         if (abs(this.targetY - this.yPos) === this.targetY - this.yPos) {
-            if (abs(this.targetY - this.yPos) < 15) {
+            if (abs(this.targetY - this.yPos) < 20) {
                 this.yPos += map(abs(this.targetY - this.yPos), 0, 15, 0, 5)
             } else {
-                this.yPos += 5
+                this.yPos += 10
             }
         } else {
-            if (abs(this.targetY - this.yPos) < 15) {
+            if (abs(this.targetY - this.yPos) < 20) {
                 this.yPos -= map(abs(this.targetY - this.yPos), 0, 15, 0, 5)
             } else {
-                this.yPos -= 5
+                this.yPos -= 10
             }
         }
     }

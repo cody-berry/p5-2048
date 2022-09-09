@@ -54,8 +54,6 @@ function setup() {
     // gridFor2048.runMoveRightTests()
     // gridFor2048.runMoveLeftTests()
 
-    gridFor2048.rows[0][0].num = 2
-
     // these are the initial twos/fours
     gridFor2048.spawnRandomNumber()
     gridFor2048.spawnRandomNumber()
@@ -63,7 +61,6 @@ function setup() {
 
 
     print(gridFor2048.rows[0])
-    print(gridFor2048.moveRight(gridFor2048.rows[0]))
 }
 
 

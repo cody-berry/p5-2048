@@ -65,21 +65,21 @@ class GameBoard {
     // checks if this board is equal to another board
     equals(other) {
         return this.rows[0][0].num === other.rows[0][0].num &&
-            this.rows[0][1].num === other.rows[0][1].num &&
-            this.rows[0][2].num === other.rows[0][2].num &&
-            this.rows[0][3].num === other.rows[0][3].num &&
-            this.rows[1][0].num === other.rows[1][0].num &&
-            this.rows[1][1].num === other.rows[1][1].num &&
-            this.rows[1][2].num === other.rows[1][2].num &&
-            this.rows[1][3].num === other.rows[1][3].num &&
-            this.rows[2][0].num === other.rows[2][0].num &&
-            this.rows[2][1].num === other.rows[2][1].num &&
-            this.rows[2][2].num === other.rows[2][2].num &&
-            this.rows[2][3].num === other.rows[2][3].num &&
-            this.rows[3][0].num === other.rows[3][0].num &&
-            this.rows[3][1].num === other.rows[3][1].num &&
-            this.rows[3][2].num === other.rows[3][2].num &&
-            this.rows[3][3].num === other.rows[3][3].num
+               this.rows[0][1].num === other.rows[0][1].num &&
+               this.rows[0][2].num === other.rows[0][2].num &&
+               this.rows[0][3].num === other.rows[0][3].num &&
+               this.rows[1][0].num === other.rows[1][0].num &&
+               this.rows[1][1].num === other.rows[1][1].num &&
+               this.rows[1][2].num === other.rows[1][2].num &&
+               this.rows[1][3].num === other.rows[1][3].num &&
+               this.rows[2][0].num === other.rows[2][0].num &&
+               this.rows[2][1].num === other.rows[2][1].num &&
+               this.rows[2][2].num === other.rows[2][2].num &&
+               this.rows[2][3].num === other.rows[2][3].num &&
+               this.rows[3][0].num === other.rows[3][0].num &&
+               this.rows[3][1].num === other.rows[3][1].num &&
+               this.rows[3][2].num === other.rows[3][2].num &&
+               this.rows[3][3].num === other.rows[3][3].num
 
     }
 
@@ -100,6 +100,7 @@ class GameBoard {
             let randomCol = random([0, 1, 2, 3])
             if (this.rows[randomRow][randomCol].num === 0) {
                 this.rows[randomRow][randomCol].num = 4
+                this.rows[randomRow][randomCol].size = 20
                 break
             }
         }
@@ -132,9 +133,6 @@ class GameBoard {
         for (let cellIndex = 3; cellIndex >= 0; cellIndex--) {
             let cell = result[cellIndex]
 
-            print("before:")
-            print(cell, cell.num, cellIndex)
-
             if (cell.num !== 0) {
                 let slideIndex = cellIndex
                 for (let possibleSlideIndex = cellIndex+1; possibleSlideIndex < 4; possibleSlideIndex++) {
@@ -144,12 +142,7 @@ class GameBoard {
                     slideIndex = possibleSlideIndex
                 }
 
-                print("middle:")
-                print(cell, cell.num, cellIndex)
-
                 result[slideIndex] = cell.copy()
-                print("after:")
-                print(cell, cell.num, slideIndex)
 
                 if (cellIndex !== slideIndex) {
                     result[cellIndex].num = 0
@@ -196,7 +189,7 @@ class GameBoard {
         let result = [...row]
 
         for (let cellIndex = 3; cellIndex > 0; cellIndex--) {
-            if (result[cellIndex] === result[cellIndex-1]) {
+            if (result[cellIndex].num === result[cellIndex-1].num) {
                 result[cellIndex].num *= 2
                 result[cellIndex].size = 20
                 result[cellIndex-1].num = 0
@@ -211,9 +204,10 @@ class GameBoard {
     // runs tests for the function combineRight()
     runCombineRightTests() {
         const testTuples = [
-            // basic combines only on 2 squares
-            {'arr': [2, 2, 0, 0], 'ans': [0, 4, 0, 0]},
-            {'arr': [0, 0, 2, 2], 'ans': [0, 0, 0, 4]},
+            // basic combines only on 2 squares (make sure this doesn't test
+            // combines on 0s)
+            {'arr': [2, 2, 0, 2], 'ans': [0, 4, 0, 2]},
+            {'arr': [2, 0, 2, 2], 'ans': [2, 0, 0, 4]},
             {'arr': [0, 2, 2, 0], 'ans': [0, 0, 4, 0]},
             // test combine on 0s
             {'arr': [0, 0, 0, 0], 'ans': [0, 0, 0, 0]},
