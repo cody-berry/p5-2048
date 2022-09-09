@@ -34,7 +34,7 @@ function preload() {
 
 
 function setup() {
-    let cnv = createCanvas(600, 300)
+    let cnv = createCanvas(600, 350)
     cnv.parent('#canvas')
     colorMode(HSB, 360, 100, 100, 100)
     textFont(font, 14)
@@ -148,7 +148,7 @@ function keyPressed() {
     for (let rowNum in gridFor2048.rows) {
         for (let cellNum in gridFor2048.rows[rowNum]) {
             gridFor2048.rows[rowNum][cellNum].targetX = rowNum*60 + 30
-            gridFor2048.rows[rowNum][cellNum].targetY = cellNum*60 + 30
+            gridFor2048.rows[rowNum][cellNum].targetY = cellNum*60 + 130
         }
     }
 }

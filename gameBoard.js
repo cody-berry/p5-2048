@@ -4,55 +4,55 @@ class GameBoard {
     constructor() {
         this.rows = [
             [new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 0, 0
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 0, 1
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 0, 2
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 0, 3
             )],  // this is the 1st row
             [new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 1, 0
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 1, 1
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 1, 2
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 1, 3
             )],  // this is the 2nd row
             [new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 2, 0
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 2, 1
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 2, 2
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 2, 3
             )],  // this is the 3rd row
             [new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 3, 0
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 3, 1
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 3, 2
             ), new Number2048(
-                new p5.Vector(0, 0),
+                new p5.Vector(0, 100),
                 3, 3
             )]   // this is the 4th row
         ]
@@ -354,10 +354,9 @@ class GameBoard {
         textAlign(CENTER, CENTER)
 
 
-        square(0, 0, 240)
         for (let rowNum in this.rows) {
             for (let cellNum in this.rows[rowNum]) {
-                square(rowNum*60 + 30, cellNum*60 + 30, 56)
+                square(rowNum*60 + 30, cellNum*60 + 130, 56)
             }
         }
         for (let rowNum in this.rows) {
@@ -380,7 +379,7 @@ class GameBoard {
         //
         //         if (frameCount === 10) {
         //             print(cellNum * 60 + 29, rowNum * 60 + 29)
-        //         }
+        //         }'
         //     }
         // }
         // cleanup
