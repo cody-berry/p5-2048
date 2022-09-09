@@ -14,6 +14,21 @@ class Number2048 {
         this.num = 0
     }
 
+    // copies the current number
+    copy() {
+        let copy = new Number2048(
+            new p5.Vector(), 0, 0
+        )
+        copy.size = this.size
+        copy.targetSize = this.targetSize
+        copy.xPos = this.xPos
+        copy.yPos = this.yPos
+        copy.targetX = this.targetX
+        copy.targetY = this.targetY
+        copy.num = this.num
+        return copy
+    }
+
     // shows the current number
     show() {
         switch (this.num) {

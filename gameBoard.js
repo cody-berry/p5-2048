@@ -132,6 +132,9 @@ class GameBoard {
         for (let cellIndex = 3; cellIndex >= 0; cellIndex--) {
             let cell = result[cellIndex]
 
+            print("before:")
+            print(cell, cell.num, cellIndex)
+
             if (cell.num !== 0) {
                 let slideIndex = cellIndex
                 for (let possibleSlideIndex = cellIndex+1; possibleSlideIndex < 4; possibleSlideIndex++) {
@@ -141,10 +144,16 @@ class GameBoard {
                     slideIndex = possibleSlideIndex
                 }
 
-                result[slideIndex] = cell
-                // if (cellIndex !== slideIndex) {
-                //     result[cellIndex].num = 0
-                // }
+                print("middle:")
+                print(cell, cell.num, cellIndex)
+
+                result[slideIndex] = cell.copy()
+                print("after:")
+                print(cell, cell.num, slideIndex)
+
+                if (cellIndex !== slideIndex) {
+                    result[cellIndex].num = 0
+                }
             }
         }
 
