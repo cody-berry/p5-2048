@@ -57,9 +57,23 @@ class GameBoard {
             )]   // this is the 4th row
         ]
 
-        this.gameLost = false
-
         this.score = 0     // the current score. increases on each combine
+    }
+
+    copy() {
+        let result = new GameBoard()
+
+        for (let rowNum in this.rows) {
+            for (let colNum in this.rows[rowNum]) {
+                result.rows[rowNum][colNum] = this.rows[rowNum][colNum].copy()
+            }
+        }
+
+        result.score = this.score
+
+
+
+        return result
     }
 
     // checks if this board is equal to another board
@@ -89,6 +103,7 @@ class GameBoard {
             let randomCol = random([0, 1, 2, 3])
             if (this.rows[randomRow][randomCol].num === 0) {
                 this.rows[randomRow][randomCol].num = 2
+                this.rows[randomRow][randomCol].size = 20
                 break
             }
         }
@@ -112,6 +127,7 @@ class GameBoard {
             for (let cell of row) {
                 if (cell.num === 0) {
                     squareUnfilled = true
+                    break
                 }
             }
         }
@@ -337,48 +353,39 @@ class GameBoard {
         fill(70, 5, 75)
         textAlign(CENTER, CENTER)
 
-        if (this.gameLost) {
 
-        }
-        else {
-            square(0, 0, 240)
-            for (let rowNum in this.rows) {
-                for (let cellNum in this.rows[rowNum]) {
-                    square(rowNum*60 + 30, cellNum*60 + 30, 56)
-                }
+        square(0, 0, 240)
+        for (let rowNum in this.rows) {
+            for (let cellNum in this.rows[rowNum]) {
+                square(rowNum*60 + 30, cellNum*60 + 30, 56)
             }
-
-            for (let rowNum in this.rows) {
-                for (let cellNum in this.rows[rowNum]) {
-                    textSize(25)
-                    fill(70, 5, 70)
-
-                    this.rows[rowNum][cellNum].show()
-
-                    noStroke()
-                }
-            }
-
-            fill(0, 0, 50, 80)
-            noStroke()
-
-            // for (let rowNum in this.rows) {
-            //     for (let cellNum in this.rows[rowNum]) {
-            //         text(this.rows[rowNum][cellNum], cellNum * 60 + 29, rowNum * 60 + 29)
-            //
-            //         if (this.rows[cellNum][rowNum] === 0) {
-            //             square(rowNum * 60 + 2, cellNum * 60 + 2, 56)
-            //         }
-            //
-            //         if (frameCount === 10) {
-            //             print(cellNum * 60 + 29, rowNum * 60 + 29)
-            //         }
-            //     }
-            // }
-
-            // cleanup
-            textAlign(LEFT)
         }
+        for (let rowNum in this.rows) {
+            for (let cellNum in this.rows[rowNum]) {
+                textSize(25)
+                fill(70, 5, 70)
+                this.rows[rowNum][cellNum].show()
+                noStroke()
+            }
+        }
+        fill(0, 0, 50, 80)
+        noStroke()
+        // for (let rowNum in this.rows) {
+        //     for (let cellNum in this.rows[rowNum]) {
+        //         text(this.rows[rowNum][cellNum], cellNum * 60 + 29, rowNum * 60 + 29)
+        //
+        //         if (this.rows[cellNum][rowNum] === 0) {
+        //             square(rowNum * 60 + 2, cellNum * 60 + 2, 56)
+        //         }
+        //
+        //         if (frameCount === 10) {
+        //             print(cellNum * 60 + 29, rowNum * 60 + 29)
+        //         }
+        //     }
+        // }
+        // cleanup
+        textAlign(LEFT)
+
     }
 }
 

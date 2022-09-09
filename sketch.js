@@ -90,7 +90,7 @@ function draw() {
 
 
 function keyPressed() {
-    let originalGrid = gridFor2048
+    let originalGrid = gridFor2048.copy()
     print(originalGrid)
     /* stop sketch */
     if (keyCode === 97) { /* numpad 1 */
@@ -102,17 +102,17 @@ function keyPressed() {
         debugCorner.visible = !debugCorner.visible
         console.log(`debugCorner visibility set to ${debugCorner.visible}`)
     }
-    if (key === 'ArrowRight') {
+    if (key === 'ArrowDown') {
         for (let rowNum in gridFor2048.rows) {
             gridFor2048.rows[rowNum] = gridFor2048.moveRight(gridFor2048.rows[rowNum])
         }
     }
-    if (key === 'ArrowLeft') {
+    if (key === 'ArrowUp') {
         for (let rowNum in gridFor2048.rows) {
             gridFor2048.rows[rowNum] = gridFor2048.moveLeft(gridFor2048.rows[rowNum])
         }
     }
-    if (key === 'ArrowDown') {
+    if (key === 'ArrowRight') {
         for (let colNum in gridFor2048.rows) {
             let col = []
             for (let row of gridFor2048.rows) {
@@ -126,7 +126,7 @@ function keyPressed() {
             }
         }
     }
-    if (key === 'ArrowUp') {
+    if (key === 'ArrowLeft') {
         for (let colNum in gridFor2048.rows) {
             let col = []
             for (let row of gridFor2048.rows) {

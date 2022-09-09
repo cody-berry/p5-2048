@@ -79,7 +79,7 @@ class Number2048 {
             textAlign(CENTER, CENTER)
             fill(0, 0, 100)
             stroke(0, 0, 100)
-            strokeWeight(4/this.num)
+            strokeWeight(3.2/sqrt(this.num))
 
             if (this.num < 8) {
                 fill(0, 0, 0)
