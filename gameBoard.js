@@ -1,59 +1,60 @@
 // This displays a 2048 board that can slide right, left, up, and down.
 // sketch.js should handle all the key presses.
 class GameBoard {
-    constructor() {
+    constructor(colorJSON) {
+        this.colors = colorJSON
         this.rows = [
             [new Number2048(
                 new p5.Vector(0, 100),
-                0, 0
+                0, 0, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                0, 1
+                0, 1, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                0, 2
+                0, 2, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                0, 3
+                0, 3, this.colors
             )],  // this is the 1st row
             [new Number2048(
                 new p5.Vector(0, 100),
-                1, 0
+                1, 0, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                1, 1
+                1, 1, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                1, 2
+                1, 2, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                1, 3
+                1, 3, this.colors
             )],  // this is the 2nd row
             [new Number2048(
                 new p5.Vector(0, 100),
-                2, 0
+                2, 0, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                2, 1
+                2, 1, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                2, 2
+                2, 2, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                2, 3
+                2, 3, this.colors
             )],  // this is the 3rd row
             [new Number2048(
                 new p5.Vector(0, 100),
-                3, 0
+                3, 0, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                3, 1
+                3, 1, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                3, 2
+                3, 2, this.colors
             ), new Number2048(
                 new p5.Vector(0, 100),
-                3, 3
+                3, 3, this.colors
             )]   // this is the 4th row
         ]
 
@@ -70,8 +71,7 @@ class GameBoard {
         }
 
         result.score = this.score
-
-
+        result.colors = this.colors
 
         return result
     }

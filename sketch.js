@@ -24,17 +24,19 @@ let variableWidthFont
 let instructions
 let debugCorner /* output debug text in the bottom left corner of the canvas */
 let gridFor2048
+let colors2048
 
 
 function preload() {
     font = loadFont('data/consola.ttf')
     fixedWidthFont = loadFont('data/consola.ttf')
     variableWidthFont = loadFont('data/meiryo.ttf')
+    colors2048 = loadJSON('data/colors.json')
 }
 
 
 function setup() {
-    let cnv = createCanvas(600, 350)
+    let cnv = createCanvas(600, 400)
     cnv.parent('#canvas')
     colorMode(HSB, 360, 100, 100, 100)
     textFont(font, 14)
@@ -46,7 +48,7 @@ function setup() {
 
     debugCorner = new CanvasDebugCorner(5)
 
-    gridFor2048 = new GameBoard()
+    gridFor2048 = new GameBoard(colors2048)
 
     // gridFor2048.runSlideRightTests()
     // gridFor2048.runCombineRightTests()
@@ -75,7 +77,13 @@ function draw() {
     }
 
     textSize(20)
-    text(`score: ${gridFor2048.score}`, width/2, height/2)
+    fill(0, 0, 0)
+    rect(0, 40+textAscent(), textWidth(' SCORE        '), textAscent()+textDescent())
+
+    fill(0, 0, 100)
+    text(` SCORE  ${gridFor2048.score}`, 0, textAscent() + 40)
+
+
 
     /* debugCorner needs to be last so its z-index is highest */
     debugCorner.setText(`frameCount: ${frameCount}`, 2)

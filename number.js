@@ -2,7 +2,7 @@
 
 // contains the information needed for a 2048 cell
 class Number2048 {
-    constructor(boardLocation, row, col) {
+    constructor(boardLocation, row, col, colorJSON) {
         this.size = 20
         this.targetSize = 56
 
@@ -12,13 +12,16 @@ class Number2048 {
         this.targetY = boardLocation.y + col*60 + 30
 
         this.num = 0
+        
+        this.colors = colorJSON
     }
 
     // copies the current number
     copy() {
         let copy = new Number2048(
-            new p5.Vector(), 0, 0
+            new p5.Vector(), 0, 0, this.colors
         )
+
         copy.size = this.size
         copy.targetSize = this.targetSize
         copy.xPos = this.xPos
@@ -26,49 +29,52 @@ class Number2048 {
         copy.targetX = this.targetX
         copy.targetY = this.targetY
         copy.num = this.num
+        copy.colors = this.colors
+
         return copy
     }
 
     // shows the current number
     show() {
+        let c = this.colors
         switch (this.num) {
             case 2:
-                fill(0, 0, 100, 80)
+                fill(c["2"]["hue"], c["2"]["sat"], c["2"]["brightness"])
                 break
             case 4:
-                fill(0, 0, 80, 80)
+                fill(c["4"]["hue"], c["4"]["sat"], c["4"]["brightness"])
                 break
             case 8:
-                fill(40, 100, 100)
+                fill(c["8"]["hue"], c["8"]["sat"], c["8"]["brightness"])
                 break
             case 16:
-                fill(30, 100, 100)
+                fill(c["16"]["hue"], c["16"]["sat"], c["16"]["brightness"])
                 break
             case 32:
-                fill(20, 100, 100)
+                fill(c["32"]["hue"], c["32"]["sat"], c["32"]["brightness"])
                 break
             case 64:
-                fill(10, 100, 100)
+                fill(c["64"]["hue"], c["64"]["sat"], c["64"]["brightness"])
                 break
             case 128:
-                fill(60, 100, 100)
+                fill(c["128"]["hue"], c["128"]["sat"], c["128"]["brightness"])
                 break
             case 256:
-                fill(58, 100, 90)
+                fill(c["256"]["hue"], c["256"]["sat"], c["256"]["brightness"])
                 break
             case 512:
-                fill(56, 100, 89)
+                fill(c["512"]["hue"], c["512"]["sat"], c["512"]["brightness"])
                 break
             case 1024:
-                fill(54, 100, 88)
+                fill(c["1024"]["hue"], c["1024"]["sat"], c["1024"]["brightness"])
                 textSize(19)
                 break
             case 2048:
-                fill(60, 100, 100)
+                fill(c["2048"]["hue"], c["2048"]["sat"], c["2048"]["brightness"])
                 textSize(19)
                 break
             default:
-                fill(0, 0, 25)
+                fill(c["none"]["hue"], c["none"]["sat"], c["none"]["brightness"])
                 textSize(12)
         }
 

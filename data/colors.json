@@ -1,0 +1,62 @@
+{
+  "2": {
+    "hue": 30,
+    "sat": 8,
+    "brightness": 92
+  },
+  "4": {
+    "hue": 40,
+    "sat": 14,
+    "brightness": 92
+  },
+  "8": {
+    "hue": 29,
+    "sat": 44,
+    "brightness": 91
+  },
+  "16": {
+    "hue": 22,
+    "sat": 53,
+    "brightness": 91
+  },
+  "32": {
+    "hue": 13,
+    "sat": 56,
+    "brightness": 90
+  },
+  "64": {
+    "hue": 12,
+    "sat": 69,
+    "brightness": 89
+  },
+  "128": {
+    "hue": 46,
+    "sat": 46,
+    "brightness": 91
+  },
+  "256": {
+    "hue": 46,
+    "sat": 58,
+    "brightness": 92
+  },
+  "512": {
+    "hue": 45,
+    "sat": 66,
+    "brightness": 92
+  },
+  "1024": {
+    "hue": 46,
+    "sat": 61,
+    "brightness": 90
+  },
+  "2048": {
+    "hue": 46,
+    "sat": 80,
+    "brightness": 92
+  },
+  "none": {
+    "hue": 42,
+    "sat": 16,
+    "brightness": 24
+  }
+}
