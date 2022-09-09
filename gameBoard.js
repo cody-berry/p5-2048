@@ -197,7 +197,7 @@ class GameBoard {
 
         for (let cellIndex = 3; cellIndex > 0; cellIndex--) {
             if (result[cellIndex] === result[cellIndex-1]) {
-                result[cellIndex].num = result[cellIndex].num * 2
+                result[cellIndex].num *= 2
                 result[cellIndex].size = 20
                 result[cellIndex-1].num = 0
 
