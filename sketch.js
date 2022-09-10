@@ -49,29 +49,43 @@ function setup() {
 
     debugCorner = new CanvasDebugCorner(5)
 
-    gridFor2048 = new GameBoard(colors2048)
-
     // gridFor2048.runSlideRightTests()
     // gridFor2048.runCombineRightTests()
     // print(gridFor2048.combineRight([0, 0, 0, 2]))
     // gridFor2048.runMoveRightTests()
     // gridFor2048.runMoveLeftTests()
 
-    // these are the initial twos/fours
-    gridFor2048.spawnRandomNumber()
-    gridFor2048.spawnRandomNumber()
+    let gameBoard = getItem('game-board')
 
-    let nums = [
-        [2, 4, 2, 4],
-        [4, 2, 4, 2],
-        [2, 4, 2, 4],
-        [0, 0, 0, 0]
-    ]
-
-    for (let rowNum in nums) {
-        for (let colNum in nums[rowNum]) {
-            gridFor2048.rows[rowNum][colNum].num = nums[rowNum][colNum]
+    gridFor2048 = new GameBoard(colors2048)
+    for (let rowNum in gameBoard.rows) {
+        for (let colNum in gameBoard.rows[rowNum]) {
+            let num = gameBoard.rows[rowNum][colNum]
+            gridFor2048.rows[rowNum][colNum].num = num.num
+            gridFor2048.rows[rowNum][colNum].size = num.size
+            gridFor2048.rows[rowNum][colNum].targetX = num.targetX
+            gridFor2048.rows[rowNum][colNum].xPos = num.xPos
+            gridFor2048.rows[rowNum][colNum].yPos = num.yPos
+            gridFor2048.rows[rowNum][colNum].targetY = num.targetY
+            gridFor2048.rows[rowNum][colNum].targetSize = num.targetSize
         }
+    }
+    gridFor2048.score = gameBoard.score
+
+    if (gridFor2048) {
+        if (ifGameLost()) {
+            gridFor2048 = new GameBoard(colors2048)
+
+            // these are the initial twos/fours
+            gridFor2048.spawnRandomNumber()
+            gridFor2048.spawnRandomNumber()
+        }
+    } else {
+        gridFor2048 = new GameBoard(colors2048)
+
+        // these are the initial twos/fours
+        gridFor2048.spawnRandomNumber()
+        gridFor2048.spawnRandomNumber()
     }
 }
 
@@ -151,6 +165,32 @@ function commandDown() {
     }
 }
 
+function ifGameLost() {
+    let originalGrid = gridFor2048.copy()
+    commandLeft()
+    if (!originalGrid.equals(gridFor2048.copy())) {
+        gridFor2048 = originalGrid
+        return false
+    }
+    commandRight()
+    if (!originalGrid.equals(gridFor2048.copy())) {
+        gridFor2048 = originalGrid
+        return false
+    }
+    commandUp()
+    if (!originalGrid.equals(gridFor2048.copy())) {
+        gridFor2048 = originalGrid
+        return false
+    }
+    commandDown()
+    if (!originalGrid.equals(gridFor2048.copy())) {
+        gridFor2048 = originalGrid
+        return false
+    }
+    gridFor2048 = originalGrid
+    return true
+}
+
 function keyPressed() {
     let originalGrid = gridFor2048.copy()
     /* stop sketch */
@@ -187,25 +227,10 @@ function keyPressed() {
         }
     }
 
+    lost = ifGameLost()
 
-    originalGrid = gridFor2048.copy()
-    commandLeft()
-    if (!originalGrid.equals(gridFor2048.copy())) {
-        return
-    }
-    commandRight()
-    if (!originalGrid.equals(gridFor2048.copy())) {
-        return
-    }
-    commandUp()
-    if (!originalGrid.equals(gridFor2048.copy())) {
-        return
-    }
-    commandDown()
-    if (!originalGrid.equals(gridFor2048.copy())) {
-        return
-    }
-    lost = true
+
+    storeItem('game-board', gridFor2048.copy())
 }
 
 

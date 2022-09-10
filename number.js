@@ -29,7 +29,6 @@ class Number2048 {
         copy.targetX = this.targetX
         copy.targetY = this.targetY
         copy.num = this.num
-        copy.colors = this.colors
 
         return copy
     }

@@ -62,7 +62,7 @@ class GameBoard {
     }
 
     copy() {
-        let result = new GameBoard()
+        let result = new GameBoard(this.colors)
 
         for (let rowNum in this.rows) {
             for (let colNum in this.rows[rowNum]) {
@@ -369,22 +369,7 @@ class GameBoard {
         }
         fill(0, 0, 50, 80)
         noStroke()
-        // for (let rowNum in this.rows) {
-        //     for (let cellNum in this.rows[rowNum]) {
-        //         text(this.rows[rowNum][cellNum], cellNum * 60 + 29, rowNum * 60 + 29)
-        //
-        //         if (this.rows[cellNum][rowNum] === 0) {
-        //             square(rowNum * 60 + 2, cellNum * 60 + 2, 56)
-        //         }
-        //
-        //         if (frameCount === 10) {
-        //             print(cellNum * 60 + 29, rowNum * 60 + 29)
-        //         }'
-        //     }
-        // }
-        // cleanup
         textAlign(LEFT)
-
     }
 }
 
