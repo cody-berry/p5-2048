@@ -25,6 +25,7 @@ let instructions
 let debugCorner /* output debug text in the bottom left corner of the canvas */
 let gridFor2048
 let colors2048
+let lost=false /* have you lost the game? */
 
 
 function preload() {
@@ -60,9 +61,18 @@ function setup() {
     gridFor2048.spawnRandomNumber()
     gridFor2048.spawnRandomNumber()
 
+    let nums = [
+        [2, 4, 2, 4],
+        [4, 2, 4, 2],
+        [2, 4, 2, 4],
+        [0, 0, 0, 0]
+    ]
 
-
-    print(gridFor2048.rows[0])
+    for (let rowNum in nums) {
+        for (let colNum in nums[rowNum]) {
+            gridFor2048.rows[rowNum][colNum].num = nums[rowNum][colNum]
+        }
+    }
 }
 
 
@@ -70,6 +80,11 @@ function draw() {
     background(234, 34, 24)
 
     gridFor2048.show()
+    if (lost) {
+        textSize(30)
+        text('GAME LOST', 300, 300)
+    }
+
     for (let row of gridFor2048.rows) {
         for (let cell of row) {
             cell.update()
@@ -94,12 +109,50 @@ function draw() {
     //     noLoop()
 }
 
+function commandLeft() {
+    for (let colNum in gridFor2048.rows) {
+        let col = []
+        for (let row of gridFor2048.rows) {
+            col.push(row[colNum])
+        }
 
+        col = gridFor2048.moveLeft(col)
 
+        for (let rowNum in gridFor2048.rows) {
+            gridFor2048.rows[rowNum][colNum] = col[rowNum]
+        }
+    }
+}
+
+function commandRight() {
+    for (let colNum in gridFor2048.rows) {
+        let col = []
+        for (let row of gridFor2048.rows) {
+            col.push(row[colNum])
+        }
+
+        col = gridFor2048.moveRight(col)
+
+        for (let rowNum in gridFor2048.rows) {
+            gridFor2048.rows[rowNum][colNum] = col[rowNum]
+        }
+    }
+}
+
+function commandUp() {
+    for (let rowNum in gridFor2048.rows) {
+        gridFor2048.rows[rowNum] = gridFor2048.moveLeft(gridFor2048.rows[rowNum])
+    }
+}
+
+function commandDown() {
+    for (let rowNum in gridFor2048.rows) {
+        gridFor2048.rows[rowNum] = gridFor2048.moveRight(gridFor2048.rows[rowNum])
+    }
+}
 
 function keyPressed() {
     let originalGrid = gridFor2048.copy()
-    print(originalGrid)
     /* stop sketch */
     if (keyCode === 97) { /* numpad 1 */
         noLoop()
@@ -111,42 +164,16 @@ function keyPressed() {
         console.log(`debugCorner visibility set to ${debugCorner.visible}`)
     }
     if (key === 'ArrowDown') {
-        for (let rowNum in gridFor2048.rows) {
-            gridFor2048.rows[rowNum] = gridFor2048.moveRight(gridFor2048.rows[rowNum])
-        }
+        commandDown()
     }
     if (key === 'ArrowUp') {
-        for (let rowNum in gridFor2048.rows) {
-            gridFor2048.rows[rowNum] = gridFor2048.moveLeft(gridFor2048.rows[rowNum])
-        }
+        commandUp()
     }
     if (key === 'ArrowRight') {
-        for (let colNum in gridFor2048.rows) {
-            let col = []
-            for (let row of gridFor2048.rows) {
-                col.push(row[colNum])
-            }
-
-            col = gridFor2048.moveRight(col)
-
-            for (let rowNum in gridFor2048.rows) {
-                gridFor2048.rows[rowNum][colNum] = col[rowNum]
-            }
-        }
+        commandRight()
     }
     if (key === 'ArrowLeft') {
-        for (let colNum in gridFor2048.rows) {
-            let col = []
-            for (let row of gridFor2048.rows) {
-                col.push(row[colNum])
-            }
-
-            col = gridFor2048.moveLeft(col)
-
-            for (let rowNum in gridFor2048.rows) {
-                gridFor2048.rows[rowNum][colNum] = col[rowNum]
-            }
-        }
+        commandLeft()
     }
 
     if (!originalGrid.equals(gridFor2048)) {
@@ -159,6 +186,26 @@ function keyPressed() {
             gridFor2048.rows[rowNum][cellNum].targetY = cellNum*60 + 130
         }
     }
+
+
+    originalGrid = gridFor2048.copy()
+    commandLeft()
+    if (!originalGrid.equals(gridFor2048.copy())) {
+        return
+    }
+    commandRight()
+    if (!originalGrid.equals(gridFor2048.copy())) {
+        return
+    }
+    commandUp()
+    if (!originalGrid.equals(gridFor2048.copy())) {
+        return
+    }
+    commandDown()
+    if (!originalGrid.equals(gridFor2048.copy())) {
+        return
+    }
+    lost = true
 }
 
 
