@@ -107,11 +107,20 @@ function draw() {
 
     textSize(20)
     fill(0, 0, 0)
-    rect(0, 40+textAscent(), textWidth(' SCORE        '), textAscent()+textDescent())
+    rect(30, 40+textAscent(), textWidth('SCORE'), textAscent()+textDescent())
+
+    fill(0, 0, 0)
+    rect(230, 40+textAscent(), textWidth('BEST'), textAscent()+textDescent())
 
     fill(0, 0, 100)
     text(` SCORE  ${gridFor2048.score}`, 0, textAscent() + 40)
 
+    fill(0, 0, 100)
+    if (getItem('best-score')) {
+        text(` BEST  ${getItem('best-score')}`, 200, textAscent() + 40)
+    } else {
+        text(` BEST  ${0}`, 200, textAscent() + 40)
+    }
 
 
     /* debugCorner needs to be last so its z-index is highest */
@@ -231,6 +240,14 @@ function keyPressed() {
 
 
     storeItem('game-board', gridFor2048.copy())
+
+    if (getItem('best-score')) {
+        if (getItem('best-score') < gridFor2048.score) {
+            storeItem('best-score', gridFor2048.score)
+        }
+    } else {
+        storeItem('best-score', gridFor2048.score)
+    }
 }
 
 
