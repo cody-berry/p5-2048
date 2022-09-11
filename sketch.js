@@ -45,7 +45,11 @@ function setup() {
     /* initialize instruction div */
     instructions = select('#ins')
     instructions.html(`<pre>
-        numpad 1 → freeze sketch</pre>`)
+        numpad 1 → freeze sketch
+        shift+R → reset game
+        Planning on:
+        shift+U → undo move
+        shift+B → view best score</pre>`)
 
     debugCorner = new CanvasDebugCorner(5)
 
@@ -211,6 +215,12 @@ function keyPressed() {
     if (key === '`') { /* toggle debug corner visibility */
         debugCorner.visible = !debugCorner.visible
         console.log(`debugCorner visibility set to ${debugCorner.visible}`)
+    }
+    if (key === 'R') { /* reset game */
+        gridFor2048 = new GameBoard(colors2048)
+
+        // these are the initial twos/fours
+        gridFor2048.spawnRandomNumber()
     }
     if (key === 'ArrowDown') {
         commandDown()
