@@ -1,0 +1,33 @@
+[33me8a4152[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m add reset game with shift+R
+[33m101ee3b[m add best score with local storage
+[33m3b38812[m save game progress if not lost
+[33mbdb2d38[m implement a signal for 'GAME LOST'
+[33mbe884af[m add colors.json, apply in Number2048
+[33mb3fa9af[m fix the top-left rectangle from the 'square()'
+[33m76b54d1[m 'fix' spawnRandomNumber()
+[33m8add831[m fix combineRight()
+[33m7fe87f4[m fix slideRight()
+[33ma4995d1[m write a copy() function, use in slideRight()
+[33m6d89dbf[m fix a few more bugs, rename to 2048
+[33m58a5170[m add 'arrival demo'
+[33mb72c255[m add debug visibility with backtick
+[33md7848b3[m add a bit of planning for animations
+[33mab3a308[m make a real 2048 app
+[33m3c79236[m add colored numbers to 2048 app
+[33m126cfe9[m create an almost-working 2048 app
+[33mcb4dbf1[m add spawnRandomTwo() (now this is mini-2048 app)
+[33m20e35d9[m move down when down pressed, move up when up pressed
+[33mf7aa52d[m move right when right pressed, move left when left pressed
+[33mbe38890[m add show()
+[33m9565f07[m add moveLeftTests() and moveLeft()
+[33me965d1f[m add moveRightTests () and combineRight(), fix combineRight()
+[33m615acb8[m add combineRightTests() and combindRight()
+[33m4df984b[m add slideRightTests() and slideRight()
+[33ma97cb40[m add partial skeleton and fields for GameBoard()
+[33m43b3af9[m add planning for combining right, just that
+[33ma2bed2b[m add planning for sliding right, just that
+[33md7b8048[m add 7 test cases for the command 'right' for one row
+[33mdb53635[m add more 2048 planning
+[33mc776500[m add planning for p5-2048
+[33maae6261[m add template project
+[33m749cb90[m Initial commit

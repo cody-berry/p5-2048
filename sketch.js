@@ -26,6 +26,7 @@ let debugCorner /* output debug text in the bottom left corner of the canvas */
 let gridFor2048
 let colors2048
 let lost=false /* have you lost the game? */
+let lastMoves = [] /* the result of your last moves */
 
 
 function preload() {
@@ -46,10 +47,16 @@ function setup() {
     instructions = select('#ins')
     instructions.html(`<pre>
         numpad 1 → freeze sketch
-        shift+R → reset game
-        Planning on:
-        shift+U → undo move
-        shift+B → view best score</pre>`)
+        shift R → reset game
+        shift U → undo move
+        ⚠Currentely, this game
+         disables undoing twice in
+          a row⚠
+        ⚠Currentely, you can cheat 
+        by undoing a move, doing
+         that move again, and undoing 
+         multiple times to get the 
+         spawn you want⚠</pre>`)
 
     debugCorner = new CanvasDebugCorner(5)
 
@@ -95,7 +102,7 @@ function setup() {
 
 
 function draw() {
-    background(234, 34, 24)
+    background(49, 4, 98)
 
     gridFor2048.show()
     if (lost) {
@@ -110,33 +117,66 @@ function draw() {
     }
 
     textSize(20)
-    fill(0, 0, 0)
-    rect(30, 40+textAscent(), textWidth('SCORE'), textAscent()+textDescent())
+    fill(0, 0, 50)
+    rect(textWidth(' SCORE  ' + gridFor2048.score)/2, 40+textAscent(), textWidth(' SCORE  ' + gridFor2048.score), textAscent()+textDescent())
 
-    fill(0, 0, 0)
-    rect(230, 40+textAscent(), textWidth('BEST'), textAscent()+textDescent())
+    rect(150 + textWidth(' BEST  ' + getItem('best-score'))/2, 40+textAscent(), textWidth(' BEST  ' + getItem('best-score')), textAscent()+textDescent())
 
     fill(0, 0, 100)
     text(` SCORE  ${gridFor2048.score}`, 0, textAscent() + 40)
 
     fill(0, 0, 100)
     if (getItem('best-score')) {
-        text(` BEST  ${getItem('best-score')}`, 200, textAscent() + 40)
+        text(` BEST  ${getItem('best-score')}`, 150, textAscent() + 40)
     } else {
-        text(` BEST  ${0}`, 200, textAscent() + 40)
+        text(` BEST  ${0}`, 150, textAscent() + 40)
     }
 
+    fill(0, 0, 50)
+
+    if (
+        mouseX > 250 &&
+        mouseX < 350 &&
+        mouseY > 50 &&
+        mouseY > 150
+    ) {
+        stroke(0, 0, 75)
+    }
+
+    rect(300, 200, 100, 50, 5)
+
+    noStroke()
+
+    fill(0, 0, 100)
+    textAlign(CENTER, CENTER)
+    text('New game', 300, 200)
 
     /* debugCorner needs to be last so its z-index is highest */
-    debugCorner.setText(`frameCount: ${frameCount}`, 2)
-    debugCorner.setText(`fps: ${frameRate().toFixed(0)}`, 1)
-    debugCorner.showBottom()
+    // debugCorner.setText(`frameCount: ${frameCount}`, 2)
+    // debugCorner.setText(`fps: ${frameRate().toFixed(0)}`, 1)
+    // debugCorner.showBottom()
 
     // if (frameCount > 3000)
     //     noLoop()
 }
 
+function mousePressed() {
+    if (
+        mouseX > 250 &&
+        mouseX < 350 &&
+        mouseY > 50 &&
+        mouseY > 150
+    ) {
+        gridFor2048 = new GameBoard(colors2048)
+
+        // these are the initial twos/fours
+        gridFor2048.spawnRandomNumber()
+        gridFor2048.spawnRandomNumber()
+    }
+}
+
 function commandLeft() {
+    lastMoves.push(gridFor2048.copy())
     for (let colNum in gridFor2048.rows) {
         let col = []
         for (let row of gridFor2048.rows) {
@@ -152,6 +192,7 @@ function commandLeft() {
 }
 
 function commandRight() {
+    lastMoves.push(gridFor2048.copy())
     for (let colNum in gridFor2048.rows) {
         let col = []
         for (let row of gridFor2048.rows) {
@@ -167,40 +208,48 @@ function commandRight() {
 }
 
 function commandUp() {
+    lastMoves.push(gridFor2048.copy())
     for (let rowNum in gridFor2048.rows) {
         gridFor2048.rows[rowNum] = gridFor2048.moveLeft(gridFor2048.rows[rowNum])
     }
 }
 
 function commandDown() {
+    lastMoves.push(gridFor2048.copy())
     for (let rowNum in gridFor2048.rows) {
         gridFor2048.rows[rowNum] = gridFor2048.moveRight(gridFor2048.rows[rowNum])
     }
 }
 
 function ifGameLost() {
+    let temp = lastMoves
     let originalGrid = gridFor2048.copy()
     commandLeft()
     if (!originalGrid.equals(gridFor2048.copy())) {
+        lastMoves = temp
         gridFor2048 = originalGrid
         return false
     }
     commandRight()
     if (!originalGrid.equals(gridFor2048.copy())) {
+        lastMoves = temp
         gridFor2048 = originalGrid
         return false
     }
     commandUp()
     if (!originalGrid.equals(gridFor2048.copy())) {
+        lastMoves = temp
         gridFor2048 = originalGrid
         return false
     }
     commandDown()
     if (!originalGrid.equals(gridFor2048.copy())) {
+        lastMoves = temp
         gridFor2048 = originalGrid
         return false
     }
     gridFor2048 = originalGrid
+    lastMoves = temp
     return true
 }
 
@@ -257,6 +306,21 @@ function keyPressed() {
         }
     } else {
         storeItem('best-score', gridFor2048.score)
+    }
+    if (key === 'U') { /* undo move */
+        console.log(lastMoves)
+        if (lastMoves && !gridFor2048.equals(lastMoves[lastMoves.length - 1])) {
+            gridFor2048 = lastMoves[lastMoves.length - 1]
+            let newLastMoves = []
+            for (let i in lastMoves) {
+                if (i !== lastMoves.length - 1) {
+                    newLastMoves.push(lastMoves[i])
+                }
+            }
+            lastMoves = newLastMoves
+        } else {
+            print('UNDO UNAVAILABLE')
+        }
     }
 }
 

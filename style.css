@@ -1,5 +1,5 @@
 html, body {
-    background-color: rgb(32, 33, 51);
+    background-color: rgb(250, 248, 239);
     color: gainsboro;
 }
 
@@ -10,7 +10,7 @@ body {
 }
 
 #ins {
-    color: gainsboro;
+    color: black;
     padding: 2px 4px 2px 4px;
     font-family: consolas;
     font-size: 12px;

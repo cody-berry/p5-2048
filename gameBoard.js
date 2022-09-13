@@ -93,7 +93,8 @@ class GameBoard {
                this.rows[3][0].num === other.rows[3][0].num &&
                this.rows[3][1].num === other.rows[3][1].num &&
                this.rows[3][2].num === other.rows[3][2].num &&
-               this.rows[3][3].num === other.rows[3][3].num
+               this.rows[3][3].num === other.rows[3][3].num &&
+               this.score === other.score
 
     }
 
@@ -356,6 +357,8 @@ class GameBoard {
 
         for (let rowNum in this.rows) {
             for (let cellNum in this.rows[rowNum]) {
+                strokeWeight(4)
+                stroke(0, 0, 80)
                 square(rowNum*60 + 30, cellNum*60 + 130, 56)
             }
         }
