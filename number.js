@@ -79,7 +79,7 @@ class Number2048 {
 
         if (this.num > 0) {
             rectMode(CENTER)
-            square(this.xPos, this.yPos, this.size)
+            square(this.xPos+4, this.yPos+4, this.size, 2.5)
 
             textAlign(CENTER, CENTER)
             fill(0, 0, 100)
@@ -91,7 +91,7 @@ class Number2048 {
                 stroke(0, 0, 0)
             }
 
-            text(this.num, this.xPos, this.yPos)
+            text(this.num, this.xPos+4, this.yPos+4)
         }
     }
 

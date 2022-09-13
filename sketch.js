@@ -137,8 +137,8 @@ function draw() {
     if (
         mouseX > 250 &&
         mouseX < 350 &&
-        mouseY > 50 &&
-        mouseY > 150
+        mouseY > 175 &&
+        mouseY < 225
     ) {
         stroke(0, 0, 75)
     }
@@ -162,10 +162,10 @@ function draw() {
 
 function mousePressed() {
     if (
-        mouseX > 250 &&
-        mouseX < 350 &&
-        mouseY > 50 &&
-        mouseY > 150
+        mouseX > 200 &&
+        mouseX < 300 &&
+        mouseY > 175 &&
+        mouseY < 225
     ) {
         gridFor2048 = new GameBoard(colors2048)
 

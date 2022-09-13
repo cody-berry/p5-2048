@@ -349,23 +349,24 @@ class GameBoard {
     // shows all the numbers on-screen
     show() {
 
+        rectMode(CORNER)
+        fill(28, 14, 73)
+        square(0, 100, 248)
+
         rectMode(CENTER)
 
-        fill(70, 5, 75)
+        fill(31, 12, 80)
         textAlign(CENTER, CENTER)
-
 
         for (let rowNum in this.rows) {
             for (let cellNum in this.rows[rowNum]) {
                 strokeWeight(4)
-                stroke(0, 0, 80)
-                square(rowNum*60 + 30, cellNum*60 + 130, 56)
+                square(rowNum*60 + 34, cellNum*60 + 134, 56, 2.5)
             }
         }
         for (let rowNum in this.rows) {
             for (let cellNum in this.rows[rowNum]) {
                 textSize(25)
-                fill(70, 5, 70)
                 this.rows[rowNum][cellNum].show()
                 noStroke()
             }
