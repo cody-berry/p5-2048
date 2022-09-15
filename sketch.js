@@ -49,10 +49,10 @@ function setup() {
         numpad 1 → freeze sketch
         shift R → reset game
         shift U → undo move
-        ⚠Currentely, this game
+        ⚠Currently, this game
          disables undoing twice in
           a row⚠
-        ⚠Currentely, you can cheat 
+        ⚠Currently, you can cheat 
         by undoing a move, doing
          that move again, and undoing 
          multiple times to get the 
@@ -67,6 +67,10 @@ function setup() {
     // gridFor2048.runMoveLeftTests()
 
     let gameBoard = getItem('game-board')
+
+    if (!getItem('best-score')) {
+        storeItem('best-score', 0)
+    }
 
     gridFor2048 = new GameBoard(colors2048)
     for (let rowNum in gameBoard.rows) {
@@ -116,23 +120,31 @@ function draw() {
         }
     }
 
+    fill(28, 14, 72)
+
+    stroke(28, 14, 72)
+
+    rect(textWidth(getItem('best-score'))/2 + 220, 60, textWidth(getItem('best-score')) + 40, 60)
+    rect(textWidth(gridFor2048.score)/2 + 20, 60, textWidth(gridFor2048.score) + 40, 60)
+
+
+    textAlign(CENTER, CENTER)
+    textSize(10)
+    fill(35, 10, 93)
+
+    text('SCORE', textWidth(getItem('best-score'))/2 + 20, 40)
+    text('BEST', textWidth(getItem('best-score'))/2 + 220, 40)
+
+    textAlign(CENTER, CENTER)
+    fill(0, 0, 100)
     textSize(20)
-    fill(0, 0, 50)
-    rect(textWidth(' SCORE  ' + gridFor2048.score)/2, 40+textAscent(), textWidth(' SCORE  ' + gridFor2048.score), textAscent()+textDescent())
 
-    rect(150 + textWidth(' BEST  ' + getItem('best-score'))/2, 40+textAscent(), textWidth(' BEST  ' + getItem('best-score')), textAscent()+textDescent())
+    text(getItem('best-score'), textWidth(getItem('best-score'))/2 + 220, 80)
+    text(gridFor2048.score, textWidth(gridFor2048.score)/2 + 20, 80)
 
-    fill(0, 0, 100)
-    text(` SCORE  ${gridFor2048.score}`, 0, textAscent() + 40)
+    textSize(20)
 
-    fill(0, 0, 100)
-    if (getItem('best-score')) {
-        text(` BEST  ${getItem('best-score')}`, 150, textAscent() + 40)
-    } else {
-        text(` BEST  ${0}`, 150, textAscent() + 40)
-    }
-
-    fill(0, 0, 50)
+    fill(29, 28, 56)
 
     if (
         mouseX > 250 &&
@@ -172,6 +184,22 @@ function mousePressed() {
         // these are the initial twos/fours
         gridFor2048.spawnRandomNumber()
         gridFor2048.spawnRandomNumber()
+    }
+}
+
+function undo() {
+    console.log(lastMoves)
+    if (lastMoves && !gridFor2048.equals(lastMoves[lastMoves.length - 1])) {
+        gridFor2048 = lastMoves[lastMoves.length - 1]
+        let newLastMoves = []
+        for (let i in lastMoves) {
+            if (i !== lastMoves.length - 1) {
+                newLastMoves.push(lastMoves[i])
+            }
+        }
+        lastMoves = newLastMoves
+    } else {
+        print('UNDO UNAVAILABLE')
     }
 }
 
@@ -308,19 +336,7 @@ function keyPressed() {
         storeItem('best-score', gridFor2048.score)
     }
     if (key === 'U') { /* undo move */
-        console.log(lastMoves)
-        if (lastMoves && !gridFor2048.equals(lastMoves[lastMoves.length - 1])) {
-            gridFor2048 = lastMoves[lastMoves.length - 1]
-            let newLastMoves = []
-            for (let i in lastMoves) {
-                if (i !== lastMoves.length - 1) {
-                    newLastMoves.push(lastMoves[i])
-                }
-            }
-            lastMoves = newLastMoves
-        } else {
-            print('UNDO UNAVAILABLE')
-        }
+        undo()
     }
 }
 
