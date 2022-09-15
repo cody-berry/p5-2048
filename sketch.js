@@ -50,13 +50,12 @@ function setup() {
         shift R → reset game
         shift U → undo move
         ⚠Currently, this game
-         disables undoing twice in
-          a row⚠
-        ⚠Currently, you can cheat 
-        by undoing a move, doing
-         that move again, and undoing 
-         multiple times to get the 
-         spawn you want⚠</pre>`)
+         disables undoing (does not work)⚠
+<!--        ⚠Currently, you can cheat 
+            by undoing a move, doing
+            that move again, and undoing
+            multiple times to get the
+            spawn you want⚠--></pre>`)
 
     debugCorner = new CanvasDebugCorner(5)
 
@@ -68,7 +67,7 @@ function setup() {
 
     let gameBoard = getItem('game-board')
 
-    if (!getItem('best-score')) {
+    if (getItem('best-score')) {
         storeItem('best-score', 0)
     }
 
@@ -122,24 +121,27 @@ function draw() {
 
     fill(28, 14, 72)
 
-    stroke(28, 14, 72)
+    let bestScore = getItem('best-score').toString()
 
-    rect(textWidth(getItem('best-score'))/2 + 220, 60, textWidth(getItem('best-score')) + 40, 60)
+    rectMode(CENTER)
+
+    rect(textWidth(bestScore)/2 + 220, 60, textWidth(bestScore) + 40, 60)
     rect(textWidth(gridFor2048.score)/2 + 20, 60, textWidth(gridFor2048.score) + 40, 60)
 
 
-    textAlign(CENTER, CENTER)
     textSize(10)
+
+    textAlign(CENTER, CENTER)
     fill(35, 10, 93)
 
-    text('SCORE', textWidth(getItem('best-score'))/2 + 20, 40)
-    text('BEST', textWidth(getItem('best-score'))/2 + 220, 40)
+    text('BEST', textWidth(bestScore)/2 + 220, 40)
+    text('SCORE', textWidth(gridFor2048.score)/2 + 20, 40)
 
-    textAlign(CENTER, CENTER)
     fill(0, 0, 100)
     textSize(20)
+    textAlign(CENTER, CENTER)
 
-    text(getItem('best-score'), textWidth(getItem('best-score'))/2 + 220, 80)
+    text(bestScore, textWidth(bestScore)/2 + 220, 80)
     text(gridFor2048.score, textWidth(gridFor2048.score)/2 + 20, 80)
 
     textSize(20)
@@ -184,6 +186,8 @@ function mousePressed() {
         // these are the initial twos/fours
         gridFor2048.spawnRandomNumber()
         gridFor2048.spawnRandomNumber()
+
+        lost = false
     }
 }
 
@@ -298,6 +302,8 @@ function keyPressed() {
 
         // these are the initial twos/fours
         gridFor2048.spawnRandomNumber()
+
+        lost = false
     }
     if (key === 'ArrowDown') {
         commandDown()
