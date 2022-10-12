@@ -47,15 +47,14 @@ function setup() {
     instructions = select('#ins')
     instructions.html(`<pre>
         numpad 1 → freeze sketch
-        shift R → reset game
-        shift U → undo move
-        ⚠Currently, this game
-         disables undoing (does not work)⚠
-<!--        ⚠Currently, you can cheat 
-            by undoing a move, doing
-            that move again, and undoing
-            multiple times to get the
-            spawn you want⚠--></pre>`)
+        lowercase R → reset game
+        lowercase U → undo move
+        lowercase B → view best board: undo-able
+        ⚠Currently, you can cheat 
+         by undoing a move, doing
+         that move again, and undoing
+         multiple times to get the
+         spawn you want⚠</pre>`)
 
     debugCorner = new CanvasDebugCorner(5)
 
@@ -301,6 +300,23 @@ function keyPressed() {
 
         lost = false
     }
+    if (key === 'b') { /* set board to best game */
+        let gameBoard = getItem('best-board')
+        gridFor2048 = new GameBoard(colors2048)
+        for (let rowNum in gameBoard.rows) {
+            for (let colNum in gameBoard.rows[rowNum]) {
+                let num = gameBoard.rows[rowNum][colNum]
+                gridFor2048.rows[rowNum][colNum].num = num.num
+                gridFor2048.rows[rowNum][colNum].size = num.size
+                gridFor2048.rows[rowNum][colNum].targetX = num.targetX
+                gridFor2048.rows[rowNum][colNum].xPos = num.xPos
+                gridFor2048.rows[rowNum][colNum].yPos = num.yPos
+                gridFor2048.rows[rowNum][colNum].targetY = num.targetY
+                gridFor2048.rows[rowNum][colNum].targetSize = num.targetSize
+            }
+        }
+        originalGrid = gridFor2048.copy()
+    }
     if (key === 'ArrowDown') {
         commandDown()
     }
@@ -335,9 +351,11 @@ function keyPressed() {
     if (getItem('best-score')) {
         if (getItem('best-score') < gridFor2048.score) {
             storeItem('best-score', gridFor2048.score)
+            storeItem('best-board', gridFor2048)
         }
     } else {
         storeItem('best-score', gridFor2048.score)
+        storeItem('best-board', gridFor2048)
     }
     if (key === 'u') { /* undo move */
         undo()
