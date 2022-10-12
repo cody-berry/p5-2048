@@ -67,8 +67,9 @@ function setup() {
 
     let gameBoard = getItem('game-board')
 
-    if (getItem('best-score')) {
+    if (!getItem('best-score')) {
         storeItem('best-score', 0)
+        storeItem('best-board', new GameBoard(colors2048))
     }
 
     gridFor2048 = new GameBoard(colors2048)
@@ -101,6 +102,8 @@ function setup() {
         gridFor2048.spawnRandomNumber()
         gridFor2048.spawnRandomNumber()
     }
+
+    lastMoves = []
 }
 
 
@@ -194,14 +197,7 @@ function mousePressed() {
 function undo() {
     console.log(lastMoves)
     if (lastMoves && !gridFor2048.equals(lastMoves[lastMoves.length - 1])) {
-        gridFor2048 = lastMoves[lastMoves.length - 1]
-        let newLastMoves = []
-        for (let i in lastMoves) {
-            if (i !== lastMoves.length - 1) {
-                newLastMoves.push(lastMoves[i])
-            }
-        }
-        lastMoves = newLastMoves
+        gridFor2048 = lastMoves.pop()
     } else {
         print('UNDO UNAVAILABLE')
     }
@@ -254,34 +250,34 @@ function commandDown() {
 }
 
 function ifGameLost() {
-    let temp = lastMoves
+    let temp = lastMoves[lastMoves.length - 1]
     let originalGrid = gridFor2048.copy()
     commandLeft()
     if (!originalGrid.equals(gridFor2048.copy())) {
-        lastMoves = temp
+        lastMoves[lastMoves.length - 1] = temp
         gridFor2048 = originalGrid
         return false
     }
     commandRight()
     if (!originalGrid.equals(gridFor2048.copy())) {
-        lastMoves = temp
+        lastMoves[lastMoves.length - 1] = temp
         gridFor2048 = originalGrid
         return false
     }
     commandUp()
     if (!originalGrid.equals(gridFor2048.copy())) {
-        lastMoves = temp
+        lastMoves[lastMoves.length - 1] = temp
         gridFor2048 = originalGrid
         return false
     }
     commandDown()
     if (!originalGrid.equals(gridFor2048.copy())) {
-        lastMoves = temp
+        lastMoves[lastMoves.length - 1] = temp
         gridFor2048 = originalGrid
         return false
     }
     gridFor2048 = originalGrid
-    lastMoves = temp
+    lastMoves[lastMoves.length - 1] = temp
     return true
 }
 
@@ -297,7 +293,7 @@ function keyPressed() {
         debugCorner.visible = !debugCorner.visible
         console.log(`debugCorner visibility set to ${debugCorner.visible}`)
     }
-    if (key === 'R') { /* reset game */
+    if (key === 'r') { /* reset game */
         gridFor2048 = new GameBoard(colors2048)
 
         // these are the initial twos/fours
@@ -320,6 +316,8 @@ function keyPressed() {
 
     if (!originalGrid.equals(gridFor2048)) {
         gridFor2048.spawnRandomNumber()
+    } else {
+        lastMoves.pop()
     }
 
     for (let rowNum in gridFor2048.rows) {
@@ -341,7 +339,7 @@ function keyPressed() {
     } else {
         storeItem('best-score', gridFor2048.score)
     }
-    if (key === 'U') { /* undo move */
+    if (key === 'u') { /* undo move */
         undo()
     }
 }
