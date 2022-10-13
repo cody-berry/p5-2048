@@ -47,9 +47,9 @@ function setup() {
     instructions = select('#ins')
     instructions.html(`<pre>
         numpad 1 → freeze sketch
-        lowercase R → reset game
-        lowercase U → undo move
-        lowercase B → view best board: undo-able
+        lowercase R / press New Game → reset game
+        lowercase U / press Undo Move disabled if pressed twice in a row → undo move
+        lowercase B / press View Best Board → view best board: undo-able
         ⚠Currently, you can cheat 
          by undoing a move, doing
          that move again, and undoing
@@ -112,7 +112,7 @@ function draw() {
     gridFor2048.show()
     if (lost) {
         textSize(30)
-        text('GAME LOST', 300, 300)
+        text('GAME LOST', 400, 300)
     }
 
     for (let row of gridFor2048.rows) {
@@ -148,24 +148,59 @@ function draw() {
 
     textSize(20)
 
-    fill(29, 28, 56)
+    fill(95, 23, 66)
 
     if (
         mouseX > 250 &&
-        mouseX < 350 &&
-        mouseY > 175 &&
-        mouseY < 225
+        mouseX < 370 &&
+        mouseY > 145 &&
+        mouseY < 195
     ) {
         stroke(0, 0, 75)
     }
 
-    rect(300, 200, 100, 50, 5)
+    rect(340, 170, 180, 50, 5)
+
+    noStroke()
+
+    if (
+        mouseX > 250 &&
+        mouseX < 370 &&
+        mouseY > 200 &&
+        mouseY < 250
+    ) {
+        stroke(0, 0, 75)
+    }
+
+    fill(43, 35, 62)
+
+    rect(340, 225, 180, 50, 5)
+
+    noStroke()
+
+    if (
+        mouseX > 250 &&
+        mouseX < 370 &&
+        mouseY > 255 &&
+        mouseY < 305
+    ) {
+        stroke(0, 0, 75)
+    }
+
+    fill(15, 69, 78)
+
+    rect(340, 280, 180, 50, 5)
 
     noStroke()
 
     fill(0, 0, 100)
+
     textAlign(CENTER, CENTER)
-    text('New game', 300, 200)
+    text('New game', 340, 170)
+
+    text('View best board', 340, 225)
+
+    text('Undo move', 340, 280)
 
     /* debugCorner needs to be last so its z-index is highest */
     // debugCorner.setText(`frameCount: ${frameCount}`, 2)
@@ -177,19 +212,34 @@ function draw() {
 }
 
 function mousePressed() {
+    // did we just press the 'view best board' button?
     if (
-        mouseX > 200 &&
-        mouseX < 300 &&
-        mouseY > 175 &&
-        mouseY < 225
+        mouseX > 250 &&
+        mouseX < 370 &&
+        mouseY > 200 &&
+        mouseY < 250
     ) {
+        accessBestBoard()
+
+        lost = false
+    } if ( // did we just press the 'undo' button?
+        mouseX > 250 &&
+        mouseX < 370 &&
+        mouseY > 255 &&
+        mouseY < 305
+    ) {
+        undo()
+    } if (
+        mouseX > 250 &&
+        mouseX < 370 &&
+        mouseY > 145 &&
+        mouseY < 195
+    ) { // did we just press the 'new game' button?
         gridFor2048 = new GameBoard(colors2048)
 
         // these are the initial twos/fours
         gridFor2048.spawnRandomNumber()
         gridFor2048.spawnRandomNumber()
-
-        lost = false
     }
 }
 
@@ -199,6 +249,29 @@ function undo() {
         gridFor2048 = lastMoves.pop()
     } else {
         print('UNDO UNAVAILABLE')
+    }
+}
+
+// access the board when you got your highest score
+function accessBestBoard() {
+    lastMoves.push(gridFor2048.copy())
+
+    let gameBoard = getItem('best-board')
+    gridFor2048 = new GameBoard(colors2048)
+
+    gridFor2048.score = gameBoard.score
+
+    for (let rowNum in gameBoard.rows) {
+        for (let colNum in gameBoard.rows[rowNum]) {
+            let num = gameBoard.rows[rowNum][colNum]
+            gridFor2048.rows[rowNum][colNum].num = num.num
+            gridFor2048.rows[rowNum][colNum].size = num.size
+            gridFor2048.rows[rowNum][colNum].targetX = num.targetX
+            gridFor2048.rows[rowNum][colNum].xPos = num.xPos
+            gridFor2048.rows[rowNum][colNum].yPos = num.yPos
+            gridFor2048.rows[rowNum][colNum].targetY = num.targetY
+            gridFor2048.rows[rowNum][colNum].targetSize = num.targetSize
+        }
     }
 }
 
@@ -301,20 +374,7 @@ function keyPressed() {
         lost = false
     }
     if (key === 'b') { /* set board to best game */
-        let gameBoard = getItem('best-board')
-        gridFor2048 = new GameBoard(colors2048)
-        for (let rowNum in gameBoard.rows) {
-            for (let colNum in gameBoard.rows[rowNum]) {
-                let num = gameBoard.rows[rowNum][colNum]
-                gridFor2048.rows[rowNum][colNum].num = num.num
-                gridFor2048.rows[rowNum][colNum].size = num.size
-                gridFor2048.rows[rowNum][colNum].targetX = num.targetX
-                gridFor2048.rows[rowNum][colNum].xPos = num.xPos
-                gridFor2048.rows[rowNum][colNum].yPos = num.yPos
-                gridFor2048.rows[rowNum][colNum].targetY = num.targetY
-                gridFor2048.rows[rowNum][colNum].targetSize = num.targetSize
-            }
-        }
+        accessBestBoard()
         originalGrid = gridFor2048.copy()
     }
     if (key === 'ArrowDown') {
